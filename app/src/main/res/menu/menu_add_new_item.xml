@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.portilo.app.AddNewItemActivity">
+    <item android:title="aa"
+        android:id="@+id/menu_item_new"
+        android:icon="@drawable/ic_action_accept"
+        android:showAsAction="always"
+        app:showAsAction="always"/>
+</menu>
