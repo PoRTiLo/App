@@ -62,7 +62,12 @@ public class MainActivity extends ActionBarActivity
   public void onNavigationDrawerItemSelected(int position) {
     // update the main content by replacing fragments
     FragmentManager fragmentManager = getSupportFragmentManager();
-    fragmentManager.beginTransaction().replace(R.id.container, PlaceholderFragment.newInstance(position + 1)).commit();
+//    fragmentManager.beginTransaction().replace(R.id.container, PlaceholderFragment.newInstance(position + 1)).commit();
+    if (position == 0) {
+      fragmentManager.beginTransaction()
+              .replace(R.id.container, HomeFragment.newInstance())
+              .commit();
+    }
   }
 
   public void onSectionAttached(int number) {
@@ -163,8 +168,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onAttach(Activity activity) {
       super.onAttach(activity);
-      ((MainActivity) activity).onSectionAttached(
-              getArguments().getInt(ARG_SECTION_NUMBER));
+      ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
     }
   }
 
