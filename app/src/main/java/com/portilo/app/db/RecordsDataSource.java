@@ -49,7 +49,7 @@ public class RecordsDataSource {
     // Create ContentValues to add key "column"/value
     ContentValues values = new ContentValues();
 
-//    values.put(MySQLiteHelper.COLUMN_NAME_DATE, record.getDate().getTime()); // get date
+    values.put(MySQLiteHelper.COLUMN_NAME_DATE, record.getDate()); // get date
     values.put(MySQLiteHelper.COLUMN_NAME_LOCATION, record.getLocation());   // get location
     values.put(MySQLiteHelper.COLUMN_NAME_VOLUME, record.getVolume());       // get volume
     values.put(MySQLiteHelper.COLUMN_NAME_TANK, record.getTank());           // get tank
@@ -98,7 +98,7 @@ public class RecordsDataSource {
     Record record = new Record();
 
     record.setId(cursor.getLong(0));
-//    record.setDate(new Date(cursor.getLong(1)));
+    record.setDate(cursor.getLong(1));
     record.setLocation(cursor.getString(2));
     record.setVolume(cursor.getDouble(3));
     record.setTank(cursor.getDouble(4));

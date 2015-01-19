@@ -5,11 +5,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.content.Intent;
@@ -17,22 +14,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.portilo.app.db.RecordsDataSource;
 import com.portilo.app.model.Record;
-
-import java.util.List;
-
-import javax.xml.transform.Result;
 
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-  private RecordsDataSource datasource;
+  private RecordsDataSource dataSource;
 
   private static int tempOdometer = 52000;
 
@@ -51,6 +41,9 @@ public class MainActivity extends ActionBarActivity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+    dataSource = new RecordsDataSource(this);
+    dataSource.open();
+
     mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
     mTitle = getTitle();
 
@@ -62,23 +55,23 @@ public class MainActivity extends ActionBarActivity
   public void onNavigationDrawerItemSelected(int position) {
     // update the main content by replacing fragments
     FragmentManager fragmentManager = getSupportFragmentManager();
-//    fragmentManager.beginTransaction().replace(R.id.container, PlaceholderFragment.newInstance(position + 1)).commit();
     if (position == 0) {
-      fragmentManager.beginTransaction()
-              .replace(R.id.container, HomeFragment.newInstance())
-              .commit();
+      fragmentManager.beginTransaction().replace(R.id.container, HomeFragment.newInstance()).commit();
+    } else if (position == 1) {
+      fragmentManager.beginTransaction().replace(R.id.container, AboutAppFragment.newInstance()).commit();
     }
+    onSectionAttached(position);
   }
 
   public void onSectionAttached(int number) {
     switch (number) {
-      case 1:
+      case 0:
         mTitle = getString(R.string.title_section1);
         break;
-      case 2:
+      case 1:
         mTitle = getString(R.string.title_section2);
         break;
-      case 3:
+      case 2:
         mTitle = getString(R.string.title_section3);
         break;
     }
@@ -128,8 +121,14 @@ public class MainActivity extends ActionBarActivity
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (resultCode == RESULT_OK && requestCode == 1) {
-      Record yourData = (Record) data.getParcelableExtra("1");
-      Log.i("data", yourData.toString());
+//      ArrayAdapter<Record> adapter = (ArrayAdapter<Record>) getListAdapter();
+      Record record = null;
+      Record tempRecord = (Record) data.getParcelableExtra("1");
+      Log.i("data", tempRecord.toString());
+
+      record = dataSource.createRecord(tempRecord);
+//      adapter.add(record);
+//      adapter.notifyDataSetChanged();
     }
   }
 
@@ -159,8 +158,7 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
       View rootView = inflater.inflate(R.layout.fragment_main, container, false);
       return rootView;
     }
