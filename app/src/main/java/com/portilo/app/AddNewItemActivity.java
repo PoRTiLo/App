@@ -154,6 +154,8 @@ public class AddNewItemActivity extends ActionBarActivity implements DatePickerD
     } else {
       mRecord = new Record();
     }
+
+    //TODO;validace
     timeButton.setText(calendar.get(Calendar.HOUR_OF_DAY) + ":" + (calendar.get(Calendar.MINUTE) > 9 ? calendar.get(Calendar.MINUTE) : "0" + calendar.get(Calendar.MINUTE)));
     dateButton.setText(calendar.get(Calendar.DAY_OF_MONTH) + ". " + (calendar.get(Calendar.MONTH) + 1) + ". " + calendar.get(Calendar.YEAR));
   }
