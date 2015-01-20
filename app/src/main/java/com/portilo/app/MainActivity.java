@@ -20,7 +20,7 @@ import com.portilo.app.model.Record;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ItemFragment.OnFragmentInteractionListener {
 
   private RecordsDataSource dataSource;
 
@@ -59,6 +59,8 @@ public class MainActivity extends ActionBarActivity
       fragmentManager.beginTransaction().replace(R.id.container, HomeFragment.newInstance()).commit();
     } else if (position == 1) {
       fragmentManager.beginTransaction().replace(R.id.container, AboutAppFragment.newInstance()).commit();
+    } else if (position == 2 ) {
+      fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("a", "b")).commit();
     }
     onSectionAttached(position);
   }
@@ -130,6 +132,11 @@ public class MainActivity extends ActionBarActivity
 //      adapter.add(record);
 //      adapter.notifyDataSetChanged();
     }
+  }
+
+  @Override
+  public void onFragmentInteraction(String id) {
+
   }
 
   /**

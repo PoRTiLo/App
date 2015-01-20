@@ -3,6 +3,7 @@ package com.portilo.app;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import android.widget.TextView;
 
 
 import com.portilo.app.db.RecordsDataSource;
-import com.portilo.app.dummy.DummyContent;
 import com.portilo.app.model.Record;
 
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class RecordsFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class ItemFragment extends Fragment implements AbsListView.OnItemClickListener {
 
   // TODO: Rename parameter arguments, choose names that match
   // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,14 +52,13 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
    */
   private ListAdapter mAdapter;
 
-
   private RecordsDataSource datasource;
 
-  private static int tempOdometer = 52000;
+  private List<Record> values;
 
   // TODO: Rename and change types of parameters
-  public static RecordsFragment newInstance(String param1, String param2) {
-    RecordsFragment fragment = new RecordsFragment();
+  public static ItemFragment newInstance(String param1, String param2) {
+    ItemFragment fragment = new ItemFragment();
     Bundle args = new Bundle();
     args.putString(ARG_PARAM1, param1);
     args.putString(ARG_PARAM2, param2);
@@ -71,7 +70,7 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
    * Mandatory empty constructor for the fragment manager to instantiate the
    * fragment (e.g. upon screen orientation changes).
    */
-  public RecordsFragment() {
+  public ItemFragment() {
   }
 
   @Override
@@ -85,18 +84,23 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
 
     datasource = new RecordsDataSource(getActivity());
     datasource.open();
-
-    List<Record> values = datasource.getAllRecords();
-
+    values = datasource.getAllRecords();
     // TODO: Change Adapter to display your content
     mAdapter = new ArrayAdapter<Record>(getActivity(),
-            android.R.layout.simple_list_item_1, android.R.id.text1, values);
+            android.R.layout.simple_list_item_1, android.R.id.text1,values);
+
+
+
+    // use the SimpleCursorAdapter to show the
+    // elements in a ListView
+//    ArrayAdapter<Record> adapter = new ArrayAdapter<Record>(this, android.R.layout.simple_list_item_1, values);
+//    setListAdapter(adapter);
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_records, container, false);
+    View view = inflater.inflate(R.layout.fragment_item, container, false);
 
     // Set the adapter
     mListView = (AbsListView) view.findViewById(android.R.id.list);
@@ -131,7 +135,9 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
     if (null != mListener) {
       // Notify the active callbacks interface (the activity, if the
       // fragment is attached to one) that an item has been selected.
-      mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+      mListener.onFragmentInteraction(values.get(position).getLocation());
+      Log.i("click", position + ":" + id);
+
     }
   }
 
