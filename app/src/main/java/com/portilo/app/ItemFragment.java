@@ -1,6 +1,7 @@
 package com.portilo.app;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -137,7 +138,9 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
       // fragment is attached to one) that an item has been selected.
       mListener.onFragmentInteraction(values.get(position).getLocation());
       Log.i("click", position + ":" + id);
-
+      Intent intent = new Intent(getActivity(), AddNewItemActivity.class);
+      intent.putExtra("1", values.get(position));
+      startActivity(intent);
     }
   }
 

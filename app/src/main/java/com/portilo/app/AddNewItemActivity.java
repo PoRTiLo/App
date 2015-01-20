@@ -44,6 +44,9 @@ public class AddNewItemActivity extends ActionBarActivity implements DatePickerD
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_add_new_item);
+    Intent intent = getIntent();
+    mRecord = intent.getParcelableExtra("1");
+    Log.i("AddNewItemActivity", mRecord.toString());
     init();
   }
 
@@ -144,9 +147,9 @@ public class AddNewItemActivity extends ActionBarActivity implements DatePickerD
     calendar = Calendar.getInstance();
     if (mRecord != null) {
       locationEditText.setText(mRecord.getLocation());
-      odometerEditText.setText(mRecord.getOdometer());
-      tankEditText.setText(String.valueOf(mRecord.getTank()));
-      volumeEditText.setText(String.valueOf(mRecord.getVolume()));
+      odometerEditText.setText(Integer.toString(mRecord.getOdometer()));
+      tankEditText.setText(Double.toString(mRecord.getTank()));
+      volumeEditText.setText(Double.toString(mRecord.getVolume()));
       calendar.setTimeInMillis(mRecord.getDate());
     } else {
       mRecord = new Record();
