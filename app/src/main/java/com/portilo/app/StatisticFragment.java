@@ -7,17 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class HomeFragment extends Fragment {
+public class StatisticFragment extends Fragment {
 
   /**
    * Returns a new instance of this fragment for the given section number.
    */
-  public static HomeFragment newInstance() {
-    HomeFragment fragment = new HomeFragment();
+  public static StatisticFragment newInstance() {
+    StatisticFragment fragment = new StatisticFragment();
     return fragment;
   }
 
-  public HomeFragment() {}
+  public StatisticFragment() {}
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

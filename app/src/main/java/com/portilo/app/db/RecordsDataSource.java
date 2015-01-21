@@ -69,6 +69,10 @@ public class RecordsDataSource {
     return newRecord;
   }
 
+  public Record updateRecord(Record record) {
+    return new Record();
+  }
+
   public int deleteRecord(Record record) {
     long id = record.getId();
     System.out.println("Record deleted with id: " + id);

@@ -6,11 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.content.Intent;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
@@ -43,9 +39,9 @@ public class MainActivity extends ActionBarActivity
     if (position == 0) {
       fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance()).commit();
     } else if (position == 1) {
-      fragmentManager.beginTransaction().replace(R.id.container, AboutAppFragment.newInstance()).commit();
+      fragmentManager.beginTransaction().replace(R.id.container, StatisticFragment.newInstance()).commit();
     } else if (position == 2 ) {
-      fragmentManager.beginTransaction().replace(R.id.container, HomeFragment.newInstance()).commit();
+      fragmentManager.beginTransaction().replace(R.id.container, AboutAppFragment.newInstance()).commit();
     }
     onSectionAttached(position);
   }
@@ -72,7 +68,8 @@ public class MainActivity extends ActionBarActivity
   }
 
   @Override
-  public void onFragmentInteraction(String id) { }
+  public void onFragmentInteraction(String id) {
+  }
 
   /**
    * A placeholder fragment containing a simple view.

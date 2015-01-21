@@ -50,6 +50,11 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
 
   private int selectedRecord;
 
+  public static final String LOGGER = "ItemFragment";
+  public static final Integer CREATE_RECORD = 2;
+  public static final Integer UPDATE_RECORD = 3;
+  public static final Integer DELETE_RECORD = 4;
+
   public static ItemFragment newInstance() {
     ItemFragment fragment = new ItemFragment();
     return fragment;
@@ -110,11 +115,12 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
     if (null != mListener) {
       // Notify the active callbacks interface (the activity, if the
       // fragment is attached to one) that an item has been selected.
-      mListener.onFragmentInteraction(values.get(position).getLocation());
-      Log.i("click", position + ":" + id);
+      Record mRecord = values.get(position);
+      mListener.onFragmentInteraction(mRecord.getLocation());
+      Log.i(LOGGER, "Position in list : " + position + ", record :" + mRecord);
       Intent intent = new Intent(getActivity(), AddNewItemActivity.class);
-      intent.putExtra("1", values.get(position));
-      startActivity(intent);
+      intent.putExtra(UPDATE_RECORD.toString(), mRecord);
+      startActivityForResult(intent, UPDATE_RECORD);
     }
   }
 
@@ -131,28 +137,36 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
     // as you specify a parent activity in AndroidManifest.xml.
     int id = item.getItemId();
 
-    //noinspection SimplifiableIfStatement
+    // noinspection SimplifiableIfStatement
     if (id == R.id.menu_item_new) {
-      addNewItem();
+      Intent intent = new Intent(getActivity(), AddNewItemActivity.class);
+      startActivityForResult(intent, CREATE_RECORD);
       return true;
     }
 
     return super.onOptionsItemSelected(item);
   }
-  public void addNewItem() {
-    Intent intent = new Intent(getActivity(), AddNewItemActivity.class);
-    startActivityForResult(intent, 1);
-  }
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (resultCode == getActivity().RESULT_OK && requestCode == 1) {
-      Record tempRecord = (Record) data.getParcelableExtra("1");
-      Log.i("data", tempRecord.toString());
+    if (resultCode == getActivity().RESULT_OK) {
+      if (requestCode == CREATE_RECORD) {
+        Record tempRecord = (Record) data.getParcelableExtra(CREATE_RECORD.toString());
+        Log.i(LOGGER, "New created record: " + tempRecord.toString());
 
-      Record record = dataSource.createRecord(tempRecord);
-      values.add(record);
-      mAdapter.notifyDataSetChanged();
+        Record record = dataSource.createRecord(tempRecord);
+        values.add(record);
+        mAdapter.notifyDataSetChanged();
+        Log.i(LOGGER, "Update list");
+      } else if (requestCode == UPDATE_RECORD) {
+        Record tempRecord = (Record) data.getParcelableExtra(UPDATE_RECORD.toString());
+        Log.i(LOGGER, "Updated record: " + tempRecord.toString());
+        // TODO: update values list after update data in db
+        Record record = dataSource.updateRecord(tempRecord);
+        values.add(record);
+        mAdapter.notifyDataSetChanged();
+        Log.i(LOGGER, "Update list");
+      }
     }
   }
 
@@ -171,35 +185,32 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
 
   @Override
   public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-    Toast.makeText(getActivity().getApplicationContext(), "You have pressed it long :)", Toast.LENGTH_SHORT).show();
-    Log.i("onItemLongClick", position + ":" + id);
     DeleteDialog deleteDialog = new DeleteDialog();
-    deleteDialog.setTargetFragment(this, 0);
-    deleteDialog.show(getFragmentManager(), "delete");
+    deleteDialog.setTargetFragment(this, DELETE_RECORD);
+    deleteDialog.show(getFragmentManager(), DELETE_RECORD.toString());
     selectedRecord = position;
     return true;
   }
 
   @Override
   public void onDialogPositiveClick() {
-    Log.i("onDialogPositiveClick", "onDialogPositiveClick");
     if (selectedRecord > 0 && selectedRecord < values.size()) {
       Record record = values.get(selectedRecord);
       int result = dataSource.deleteRecord(record);
       if (result > 0) {
         values.remove(selectedRecord);
-        Log.i("onDialogPositiveClick", "delete");
+        Log.i(LOGGER, "Deleted record: " + record);
         mAdapter.notifyDataSetChanged();
       }
       selectedRecord = -1;
     } else {
-      Log.i("onDialogPositiveClick", "NO delete");
+      Log.i(LOGGER, "No Deleted record");
     }
   }
 
   @Override
   public void onDialogNegativeClick() {
-    Log.i("onDialogNegativeClick", "onDialogNegativeClick");
+    Log.i(LOGGER, "Canceled deleted record");
   }
 
   /**
