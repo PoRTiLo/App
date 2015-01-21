@@ -3,9 +3,12 @@ package com.portilo.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -13,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.portilo.app.db.RecordsDataSource;
@@ -29,7 +33,8 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class ItemFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class ItemFragment extends Fragment implements AbsListView.OnItemClickListener,
+        AbsListView.OnItemLongClickListener, DeleteDialog.NoticeDialogListener {
 
   // TODO: Rename parameter arguments, choose names that match
   // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,11 +56,13 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
    * The Adapter which will be used to populate the ListView/GridView with
    * Views.
    */
-  private ListAdapter mAdapter;
+  private ArrayAdapter<Record> mAdapter;
 
-  private RecordsDataSource datasource;
+  private RecordsDataSource dataSource;
 
   private List<Record> values;
+
+  private int selectedRecord;
 
   // TODO: Rename and change types of parameters
   public static ItemFragment newInstance(String param1, String param2) {
@@ -83,14 +90,14 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
       mParam2 = getArguments().getString(ARG_PARAM2);
     }
 
-    datasource = new RecordsDataSource(getActivity());
-    datasource.open();
-    values = datasource.getAllRecords();
+    dataSource = new RecordsDataSource(getActivity());
+    dataSource.open();
+    values = dataSource.getAllRecords();
     // TODO: Change Adapter to display your content
-    mAdapter = new ArrayAdapter<Record>(getActivity(),
-            android.R.layout.simple_list_item_1, android.R.id.text1,values);
-
-
+    mAdapter = new ArrayAdapter<Record>(getActivity(), android.R.layout.simple_list_item_1,
+            android.R.id.text1, values);
+    setHasOptionsMenu(true);
+//    getFragmentManager().beginTransaction().add(this, "detail").addToBackStack("detail").commit();
 
     // use the SimpleCursorAdapter to show the
     // elements in a ListView
@@ -99,8 +106,7 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                           Bundle savedInstanceState) {
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_item, container, false);
 
     // Set the adapter
@@ -109,6 +115,7 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
 
     // Set OnItemClickListener so we can be notified on item clicks
     mListView.setOnItemClickListener(this);
+    mListView.setOnItemLongClickListener(this);
 
     return view;
   }
@@ -119,8 +126,7 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
     try {
       mListener = (OnFragmentInteractionListener) activity;
     } catch (ClassCastException e) {
-      throw new ClassCastException(activity.toString()
-              + " must implement OnFragmentInteractionListener");
+      throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
     }
   }
 
@@ -144,6 +150,44 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
     }
   }
 
+  @Override
+  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    inflater.inflate(R.menu.main, menu);
+    super.onCreateOptionsMenu(menu,inflater);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    // Handle action bar item clicks here. The action bar will
+    // automatically handle clicks on the Home/Up button, so long
+    // as you specify a parent activity in AndroidManifest.xml.
+    int id = item.getItemId();
+
+    //noinspection SimplifiableIfStatement
+    if (id == R.id.menu_item_new) {
+      addNewItem();
+      return true;
+    }
+
+    return super.onOptionsItemSelected(item);
+  }
+  public void addNewItem() {
+    Intent intent = new Intent(getActivity(), AddNewItemActivity.class);
+    startActivityForResult(intent, 1);
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (resultCode == getActivity().RESULT_OK && requestCode == 1) {
+      Record tempRecord = (Record) data.getParcelableExtra("1");
+      Log.i("data", tempRecord.toString());
+
+      Record record = dataSource.createRecord(tempRecord);
+      values.add(record);
+      mAdapter.notifyDataSetChanged();
+    }
+  }
+
   /**
    * The default content for this Fragment has a TextView that is shown when
    * the list is empty. If you would like to change the text, call this method
@@ -155,6 +199,39 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
     if (emptyView instanceof TextView) {
       ((TextView) emptyView).setText(emptyText);
     }
+  }
+
+  @Override
+  public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+    Toast.makeText(getActivity().getApplicationContext(), "You have pressed it long :)", Toast.LENGTH_SHORT).show();
+    Log.i("onItemLongClick", position + ":" + id);
+    DeleteDialog deleteDialog = new DeleteDialog();
+    deleteDialog.setTargetFragment(this, 0);
+    deleteDialog.show(getFragmentManager(), "delete");
+    selectedRecord = position;
+    return true;
+  }
+
+  @Override
+  public void onDialogPositiveClick() {
+    Log.i("onDialogPositiveClick", "onDialogPositiveClick");
+    if (selectedRecord > 0 && selectedRecord < values.size()) {
+      Record record = values.get(selectedRecord);
+      int result = dataSource.deleteRecord(record);
+      if (result > 0) {
+        values.remove(selectedRecord);
+        Log.i("onDialogPositiveClick", "delete");
+        mAdapter.notifyDataSetChanged();
+      }
+      selectedRecord = -1;
+    } else {
+      Log.i("onDialogPositiveClick", "NO delete");
+    }
+  }
+
+  @Override
+  public void onDialogNegativeClick() {
+    Log.i("onDialogNegativeClick", "onDialogNegativeClick");
   }
 
   /**

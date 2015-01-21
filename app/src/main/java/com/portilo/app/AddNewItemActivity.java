@@ -46,7 +46,11 @@ public class AddNewItemActivity extends ActionBarActivity implements DatePickerD
     setContentView(R.layout.activity_add_new_item);
     Intent intent = getIntent();
     mRecord = intent.getParcelableExtra("1");
-    Log.i("AddNewItemActivity", mRecord.toString());
+    if (mRecord != null) {
+      Log.i("AddNewItemActivity", mRecord.toString());
+    } else {
+      Log.i("AddNewItemActivity", "create ne record");
+    }
     init();
   }
 

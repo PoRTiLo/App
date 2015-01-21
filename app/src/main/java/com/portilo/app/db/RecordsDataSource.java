@@ -69,11 +69,10 @@ public class RecordsDataSource {
     return newRecord;
   }
 
-  public void deleteRecord(Record record) {
+  public int deleteRecord(Record record) {
     long id = record.getId();
     System.out.println("Record deleted with id: " + id);
-    database.delete(MySQLiteHelper.TABLE_FUELING, MySQLiteHelper.COLUMN_NAME_ID
-            + " = " + id, null);
+    return database.delete(MySQLiteHelper.TABLE_FUELING, MySQLiteHelper.COLUMN_NAME_ID + " = " + id, null);
   }
 
   public List<Record> getAllRecords() {

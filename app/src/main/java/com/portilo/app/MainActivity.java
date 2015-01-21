@@ -3,8 +3,8 @@ package com.portilo.app;
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,17 +23,10 @@ public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, ItemFragment.OnFragmentInteractionListener {
 
   private RecordsDataSource dataSource;
-
   private static int tempOdometer = 52000;
-
-  /**
-   * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-   */
+  // Fragment managing the behaviors, interactions and presentation of the navigation drawer.
   private NavigationDrawerFragment mNavigationDrawerFragment;
-
-  /**
-   * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-   */
+  // Used to store the last screen title. For use in {@link #restoreActionBar()}.
   private CharSequence mTitle;
 
   @Override
@@ -54,7 +47,7 @@ public class MainActivity extends ActionBarActivity
   @Override
   public void onNavigationDrawerItemSelected(int position) {
     // update the main content by replacing fragments
-    FragmentManager fragmentManager = getSupportFragmentManager();
+    FragmentManager fragmentManager = getFragmentManager();
     if (position == 0) {
       fragmentManager.beginTransaction().replace(R.id.container, HomeFragment.newInstance()).commit();
     } else if (position == 1) {
@@ -86,52 +79,51 @@ public class MainActivity extends ActionBarActivity
     actionBar.setTitle(mTitle);
   }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    if (!mNavigationDrawerFragment.isDrawerOpen()) {
-      // Only show items in the action bar relevant to this screen
-      // if the drawer is not showing. Otherwise, let the drawer
-      // decide what to show in the action bar.
-      getMenuInflater().inflate(R.menu.main, menu);
-      restoreActionBar();
-      return true;
-    }
-    return super.onCreateOptionsMenu(menu);
-  }
+//  @Override
+//  public boolean onCreateOptionsMenu(Menu menu) {
+//    if (!mNavigationDrawerFragment.isDrawerOpen()) {
+//      // Only show items in the action bar relevant to this screen
+//      // if the drawer is not showing. Otherwise, let the drawer
+//      // decide what to show in the action bar.
+//      getMenuInflater().inflate(R.menu.main, menu);
+//      restoreActionBar();
+//      return true;
+//    }
+//    return super.onCreateOptionsMenu(menu);
+//  }
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
-    int id = item.getItemId();
+//  @Override
+//  public boolean onOptionsItemSelected(MenuItem item) {
+//    // Handle action bar item clicks here. The action bar will
+//    // automatically handle clicks on the Home/Up button, so long
+//    // as you specify a parent activity in AndroidManifest.xml.
+//    int id = item.getItemId();
+//
+//    //noinspection SimplifiableIfStatement
+//    if (id == R.id.menu_item_new) {
+//      addNewItem();
+//      return true;
+//    }
+//
+//    return super.onOptionsItemSelected(item);
+//  }
 
-    //noinspection SimplifiableIfStatement
-    if (id == R.id.menu_item_new) {
-      addNewItem();
-      return true;
-    }
 
-    return super.onOptionsItemSelected(item);
-  }
+//  @Override
+//  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//    if (resultCode == RESULT_OK && requestCode == 1) {
+////      ArrayAdapter<Record> adapter = (ArrayAdapter<Record>) getListAdapter();
+//      Record record = null;
+//      Record tempRecord = (Record) data.getParcelableExtra("1");
+//      Log.i("data", tempRecord.toString());
+//
+//      record = dataSource.createRecord(tempRecord);
+////      adapter.notifyDataSetChanged();
+//    }
+//  }
 
-  public void addNewItem() {
-    Intent intent = new Intent(this, AddNewItemActivity.class);
-    startActivityForResult(intent, 1);
-  }
-
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (resultCode == RESULT_OK && requestCode == 1) {
-//      ArrayAdapter<Record> adapter = (ArrayAdapter<Record>) getListAdapter();
-      Record record = null;
-      Record tempRecord = (Record) data.getParcelableExtra("1");
-      Log.i("data", tempRecord.toString());
-
-      record = dataSource.createRecord(tempRecord);
-//      adapter.add(record);
-//      adapter.notifyDataSetChanged();
-    }
+  public void removeRecord() {
+//    dataSource.deleteRecord();
   }
 
   @Override
