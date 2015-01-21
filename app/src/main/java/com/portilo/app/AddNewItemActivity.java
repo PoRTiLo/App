@@ -39,18 +39,14 @@ public class AddNewItemActivity extends ActionBarActivity implements DatePickerD
 
   private Record mRecord;
   private Calendar calendar;
+  private static final String LOGGER = "AddNewItemActivity";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_add_new_item);
     Intent intent = getIntent();
-    mRecord = intent.getParcelableExtra("1");
-    if (mRecord != null) {
-      Log.i("AddNewItemActivity", mRecord.toString());
-    } else {
-      Log.i("AddNewItemActivity", "create ne record");
-    }
+    mRecord = intent.getParcelableExtra(ItemFragment.UPDATE_RECORD.toString());
     init();
   }
 
@@ -76,8 +72,8 @@ public class AddNewItemActivity extends ActionBarActivity implements DatePickerD
       // send update date back
       fillRecordFromEditor();
       Intent dataBackIntent = new Intent();
-      dataBackIntent.putExtra("1", mRecord);
-      Log.i("i", mRecord.toString());
+      dataBackIntent.putExtra(ItemFragment.CREATE_RECORD.toString(), mRecord);
+      Log.i(LOGGER, mRecord.toString());
       setResult(Activity.RESULT_OK, dataBackIntent);
 
       finish();
