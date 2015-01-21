@@ -44,6 +44,8 @@ public class MainActivity extends ActionBarActivity
       fragmentManager.beginTransaction().replace(R.id.container, AboutAppFragment.newInstance()).commit();
     }
     onSectionAttached(position);
+    // TODO not work goods
+    restoreActionBar();
   }
 
   public void onSectionAttached(int number) {

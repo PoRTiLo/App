@@ -43,6 +43,7 @@ public class DeleteDialog extends DialogFragment {
             })
             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
               public void onClick(DialogInterface dialog, int id) {
+                mListener.onDialogNegativeClick();
                 DeleteDialog.this.getDialog().cancel();
               }
             });
