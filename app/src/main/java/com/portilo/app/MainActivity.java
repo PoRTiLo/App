@@ -15,17 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
-import com.portilo.app.db.RecordsDataSource;
-import com.portilo.app.model.Record;
-
-
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, ItemFragment.OnFragmentInteractionListener {
 
-  private RecordsDataSource dataSource;
-  private static int tempOdometer = 52000;
   // Fragment managing the behaviors, interactions and presentation of the navigation drawer.
   private NavigationDrawerFragment mNavigationDrawerFragment;
+
   // Used to store the last screen title. For use in {@link #restoreActionBar()}.
   private CharSequence mTitle;
 
@@ -34,10 +29,7 @@ public class MainActivity extends ActionBarActivity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    dataSource = new RecordsDataSource(this);
-    dataSource.open();
-
-    mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+    mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
     mTitle = getTitle();
 
     // Set up the drawer.
@@ -49,11 +41,11 @@ public class MainActivity extends ActionBarActivity
     // update the main content by replacing fragments
     FragmentManager fragmentManager = getFragmentManager();
     if (position == 0) {
-      fragmentManager.beginTransaction().replace(R.id.container, HomeFragment.newInstance()).commit();
+      fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance()).commit();
     } else if (position == 1) {
       fragmentManager.beginTransaction().replace(R.id.container, AboutAppFragment.newInstance()).commit();
     } else if (position == 2 ) {
-      fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("a", "b")).commit();
+      fragmentManager.beginTransaction().replace(R.id.container, HomeFragment.newInstance()).commit();
     }
     onSectionAttached(position);
   }
@@ -79,57 +71,8 @@ public class MainActivity extends ActionBarActivity
     actionBar.setTitle(mTitle);
   }
 
-//  @Override
-//  public boolean onCreateOptionsMenu(Menu menu) {
-//    if (!mNavigationDrawerFragment.isDrawerOpen()) {
-//      // Only show items in the action bar relevant to this screen
-//      // if the drawer is not showing. Otherwise, let the drawer
-//      // decide what to show in the action bar.
-//      getMenuInflater().inflate(R.menu.main, menu);
-//      restoreActionBar();
-//      return true;
-//    }
-//    return super.onCreateOptionsMenu(menu);
-//  }
-
-//  @Override
-//  public boolean onOptionsItemSelected(MenuItem item) {
-//    // Handle action bar item clicks here. The action bar will
-//    // automatically handle clicks on the Home/Up button, so long
-//    // as you specify a parent activity in AndroidManifest.xml.
-//    int id = item.getItemId();
-//
-//    //noinspection SimplifiableIfStatement
-//    if (id == R.id.menu_item_new) {
-//      addNewItem();
-//      return true;
-//    }
-//
-//    return super.onOptionsItemSelected(item);
-//  }
-
-
-//  @Override
-//  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//    if (resultCode == RESULT_OK && requestCode == 1) {
-////      ArrayAdapter<Record> adapter = (ArrayAdapter<Record>) getListAdapter();
-//      Record record = null;
-//      Record tempRecord = (Record) data.getParcelableExtra("1");
-//      Log.i("data", tempRecord.toString());
-//
-//      record = dataSource.createRecord(tempRecord);
-////      adapter.notifyDataSetChanged();
-//    }
-//  }
-
-  public void removeRecord() {
-//    dataSource.deleteRecord();
-  }
-
   @Override
-  public void onFragmentInteraction(String id) {
-
-  }
+  public void onFragmentInteraction(String id) { }
 
   /**
    * A placeholder fragment containing a simple view.
