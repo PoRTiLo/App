@@ -194,7 +194,7 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
 
   @Override
   public void onDialogPositiveClick() {
-    if (selectedRecord > 0 && selectedRecord < values.size()) {
+    if (selectedRecord >= 0 && selectedRecord < values.size()) {
       Record record = values.get(selectedRecord);
       int result = dataSource.deleteRecord(record);
       if (result > 0) {
