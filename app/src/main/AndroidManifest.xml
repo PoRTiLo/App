@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddNewItemActivity"
+            android:name=".AddNewRecordActivity"
             android:label="@string/title_activity_add_new_item" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

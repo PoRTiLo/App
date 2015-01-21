@@ -4,11 +4,8 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.DatePicker;
 
-import com.portilo.app.AddNewItemActivity;
-import com.portilo.app.R;
+import com.portilo.app.AddNewRecordActivity;
 
 import java.util.Calendar;
 
@@ -23,7 +20,7 @@ public class DatePickerFragment extends DialogFragment  {
     int day = c.get(Calendar.DAY_OF_MONTH);
 
     // Create a new instance of DatePickerDialog and return it
-    return new DatePickerDialog(getActivity(), (AddNewItemActivity) getActivity(), year, month, day);
+    return new DatePickerDialog(getActivity(), (AddNewRecordActivity) getActivity(), year, month, day);
   }
 
 }

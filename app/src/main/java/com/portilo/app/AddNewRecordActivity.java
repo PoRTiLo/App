@@ -24,10 +24,9 @@ import com.portilo.app.view.DatePickerFragment;
 import com.portilo.app.view.TimePickerFragment;
 
 import java.util.Calendar;
-import java.util.Date;
 
 
-public class AddNewItemActivity extends ActionBarActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class AddNewRecordActivity extends ActionBarActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
   private long id;
   private Button dateButton;
@@ -39,14 +38,14 @@ public class AddNewItemActivity extends ActionBarActivity implements DatePickerD
 
   private Record mRecord;
   private Calendar calendar;
-  private static final String LOGGER = "AddNewItemActivity";
+  private static final String LOGGER = "AddNewRecordActivity";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_add_new_item);
     Intent intent = getIntent();
-    mRecord = intent.getParcelableExtra(ItemFragment.UPDATE_RECORD.toString());
+    mRecord = intent.getParcelableExtra(RecordsFragment.UPDATE_RECORD.toString());
     init();
   }
 
@@ -72,7 +71,7 @@ public class AddNewItemActivity extends ActionBarActivity implements DatePickerD
       // send update date back
       fillRecordFromEditor();
       Intent dataBackIntent = new Intent();
-      dataBackIntent.putExtra(ItemFragment.CREATE_RECORD.toString(), mRecord);
+      dataBackIntent.putExtra(RecordsFragment.CREATE_RECORD.toString(), mRecord);
       Log.i(LOGGER, mRecord.toString());
       setResult(Activity.RESULT_OK, dataBackIntent);
 

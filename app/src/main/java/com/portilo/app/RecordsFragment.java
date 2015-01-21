@@ -16,11 +16,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.portilo.app.db.RecordsDataSource;
 import com.portilo.app.model.Record;
+import com.portilo.app.view.DeleteDialog;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class ItemFragment extends Fragment implements AbsListView.OnItemClickListener,
+public class RecordsFragment extends Fragment implements AbsListView.OnItemClickListener,
         AbsListView.OnItemLongClickListener, DeleteDialog.NoticeDialogListener {
 
   private OnFragmentInteractionListener mListener;
@@ -50,13 +50,13 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
 
   private int selectedRecord;
 
-  public static final String LOGGER = "ItemFragment";
+  public static final String LOGGER = "RecordsFragment";
   public static final Integer CREATE_RECORD = 2;
   public static final Integer UPDATE_RECORD = 3;
   public static final Integer DELETE_RECORD = 4;
 
-  public static ItemFragment newInstance() {
-    ItemFragment fragment = new ItemFragment();
+  public static RecordsFragment newInstance() {
+    RecordsFragment fragment = new RecordsFragment();
     return fragment;
   }
 
@@ -64,7 +64,7 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
    * Mandatory empty constructor for the fragment manager to instantiate the
    * fragment (e.g. upon screen orientation changes).
    */
-  public ItemFragment() {}
+  public RecordsFragment() {}
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -118,7 +118,7 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
       Record mRecord = values.get(position);
       mListener.onFragmentInteraction(mRecord.getLocation());
       Log.i(LOGGER, "Position in list : " + position + ", record :" + mRecord);
-      Intent intent = new Intent(getActivity(), AddNewItemActivity.class);
+      Intent intent = new Intent(getActivity(), AddNewRecordActivity.class);
       intent.putExtra(UPDATE_RECORD.toString(), mRecord);
       startActivityForResult(intent, UPDATE_RECORD);
     }
@@ -139,7 +139,7 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
 
     // noinspection SimplifiableIfStatement
     if (id == R.id.menu_item_new) {
-      Intent intent = new Intent(getActivity(), AddNewItemActivity.class);
+      Intent intent = new Intent(getActivity(), AddNewRecordActivity.class);
       startActivityForResult(intent, CREATE_RECORD);
       return true;
     }

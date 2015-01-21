@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ItemFragment.OnFragmentInteractionListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, RecordsFragment.OnFragmentInteractionListener {
 
   // Fragment managing the behaviors, interactions and presentation of the navigation drawer.
   private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -37,7 +37,7 @@ public class MainActivity extends ActionBarActivity
     // update the main content by replacing fragments
     FragmentManager fragmentManager = getFragmentManager();
     if (position == 0) {
-      fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance()).commit();
+      fragmentManager.beginTransaction().replace(R.id.container, RecordsFragment.newInstance()).commit();
     } else if (position == 1) {
       fragmentManager.beginTransaction().replace(R.id.container, StatisticFragment.newInstance()).commit();
     } else if (position == 2 ) {

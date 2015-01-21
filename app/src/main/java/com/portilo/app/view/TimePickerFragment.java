@@ -5,12 +5,8 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TimePicker;
 
-import com.portilo.app.AddNewItemActivity;
-import com.portilo.app.R;
+import com.portilo.app.AddNewRecordActivity;
 
 import java.util.Calendar;
 
@@ -24,6 +20,6 @@ public class TimePickerFragment extends DialogFragment {
     int minute = c.get(Calendar.MINUTE);
 
     // Create a new instance of TimePickerDialog and return it
-    return new TimePickerDialog(getActivity(), (AddNewItemActivity) getActivity(), hour, minute, DateFormat.is24HourFormat(getActivity()));
+    return new TimePickerDialog(getActivity(), (AddNewRecordActivity) getActivity(), hour, minute, DateFormat.is24HourFormat(getActivity()));
   }
 }
