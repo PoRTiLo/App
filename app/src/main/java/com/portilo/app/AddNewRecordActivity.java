@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.portilo.app.model.Record;
 import com.portilo.app.view.DatePickerFragment;
@@ -69,17 +70,37 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
     //noinspection SimplifiableIfStatement
     if (id == R.id.menu_item_new) {
       // send update date back
-      fillRecordFromEditor();
-      Intent dataBackIntent = new Intent();
-      dataBackIntent.putExtra(RecordsFragment.CREATE_RECORD.toString(), mRecord);
-      Log.i(LOGGER, mRecord.toString());
-      setResult(Activity.RESULT_OK, dataBackIntent);
+      if (!fillRecordFromEditor()) {
+        showErros();
+      } else {
+        Intent dataBackIntent = new Intent();
+        dataBackIntent.putExtra(RecordsFragment.CREATE_RECORD.toString(), mRecord);
+        Log.i(LOGGER, mRecord.toString());
+        setResult(Activity.RESULT_OK, dataBackIntent);
 
-      finish();
+        finish();
+      }
       return true;
     }
 
     return super.onOptionsItemSelected(item);
+  }
+
+  private void showErros() {
+    Toast toast = Toast.makeText(getApplicationContext(), "Vyplňte všechna povinná políčka!", Toast.LENGTH_SHORT);
+    toast.show();
+
+    if (odometerEditText.getText().toString().isEmpty()) {
+      odometerEditText.setError("Pole je povinné!");
+    }
+
+    if (tankEditText.getText().toString().isEmpty()) {
+      tankEditText.setError("Pole je povinné!");
+    }
+
+    if (volumeEditText.getText().toString().isEmpty()) {
+      volumeEditText.setError("Pole je povinné!");
+    }
   }
 
   private void init() {
@@ -90,36 +111,33 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
     volumeEditText = (EditText) findViewById(R.id.volumeEditText);
     tankEditText = (EditText) findViewById(R.id.tankEditText);
 
+    volumeEditText.setError(volumeEditText.getText().toString().length() <= 0 ? "Pole je povinné!" : null);
     volumeEditText.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
       @Override
       public void onTextChanged(CharSequence s, int start, int before, int count) {
-        Log.i("aa",volumeEditText.getText().toString() );
-        if (volumeEditText.getText().toString().trim().length() <= 0) {
-          volumeEditText.setError("Volume is required!");
+        Log.i("aa", volumeEditText.getText().toString());
+        if (volumeEditText.getText().length() <= 0 || volumeEditText.getText() == null ||
+                volumeEditText.getText().toString().trim().equalsIgnoreCase("")) {
+          volumeEditText.setError("Pole je povinné!");
         } else {
           volumeEditText.setError(null);
         }
       }
       @Override
-      public void afterTextChanged(Editable s) {
-        Log.i("aa",volumeEditText.getText().toString() );
-        if (volumeEditText.getText().toString().trim().length() <= 0) {
-          volumeEditText.setError("Volume is required!");
-        } else {
-          volumeEditText.setError(null);
-        }
-      }
+      public void afterTextChanged(Editable s) {}
+
     });
 
+    tankEditText.setError(volumeEditText.getText().toString().length() <= 0 ? "Pole je povinné!" : null);
     tankEditText.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
       @Override
       public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (tankEditText.getText().toString().trim().equals("")) {
-          tankEditText.setError("Tank is required!");
+          tankEditText.setError("Pole je povinné!");
         } else {
           tankEditText.setError(null);
         }
@@ -128,13 +146,14 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
       public void afterTextChanged(Editable s) {}
     });
 
+    odometerEditText.setError(volumeEditText.getText().toString().length() <= 0 ? "Pole je povinné!" : null);
     odometerEditText.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
       @Override
       public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (odometerEditText.getText().toString().trim().equals("")) {
-          odometerEditText.setError("Odometer is required!");
+          odometerEditText.setError("Pole je povinné!");
         } else {
           odometerEditText.setError(null);
         }
@@ -154,21 +173,35 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
       mRecord = new Record();
     }
 
-    //TODO;validace
     timeButton.setText(calendar.get(Calendar.HOUR_OF_DAY) + ":" + (calendar.get(Calendar.MINUTE) > 9 ? calendar.get(Calendar.MINUTE) : "0" + calendar.get(Calendar.MINUTE)));
     dateButton.setText(calendar.get(Calendar.DAY_OF_MONTH) + ". " + (calendar.get(Calendar.MONTH) + 1) + ". " + calendar.get(Calendar.YEAR));
   }
 
-  private void fillRecordFromEditor() {
+  private boolean fillRecordFromEditor() {
     if (mRecord == null) {
       mRecord = new Record();
     }
 
     mRecord.setDate(calendar.getTimeInMillis());
     mRecord.setLocation(locationEditText.getText().toString());
-    mRecord.setOdometer(Integer.valueOf(odometerEditText.getText().toString()));
-    mRecord.setTank(Double.parseDouble(tankEditText.getText().toString()));
-    mRecord.setVolume(Double.parseDouble(volumeEditText.getText().toString()));
+    if (!odometerEditText.getText().toString().isEmpty()) {
+      mRecord.setOdometer(Integer.valueOf(odometerEditText.getText().toString()));
+    } else {
+      return false;
+    }
+
+    if (!tankEditText.getText().toString().isEmpty()) {
+      mRecord.setTank(Double.parseDouble(tankEditText.getText().toString()));
+    } else {
+      return false;
+    }
+
+    if (!volumeEditText.getText().toString().isEmpty()) {
+      mRecord.setVolume(Double.parseDouble(volumeEditText.getText().toString()));
+    } else {
+      return false;
+    }
+    return true;
   }
 
   public void showTimePickerDialog(View v) {
