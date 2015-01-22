@@ -48,7 +48,7 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
 
   private List<Record> values;
 
-  private int selectedRecord;
+  private int selectedRecordPosition;
 
   public static final String LOGGER = "RecordsFragment";
   public static final Integer CREATE_RECORD = 2;
@@ -118,6 +118,7 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
       Record mRecord = values.get(position);
       mListener.onFragmentInteraction(mRecord.getLocation());
       Log.i(LOGGER, "Position in list : " + position + ", record :" + mRecord);
+      selectedRecordPosition = position;
       Intent intent = new Intent(getActivity(), AddNewRecordActivity.class);
       intent.putExtra(UPDATE_RECORD.toString(), mRecord);
       startActivityForResult(intent, UPDATE_RECORD);
@@ -150,26 +151,33 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (resultCode == getActivity().RESULT_OK) {
+      Record tempRecord = (Record) data.getParcelableExtra(CREATE_RECORD.toString());
       if (requestCode == CREATE_RECORD) {
-        Record tempRecord = (Record) data.getParcelableExtra(CREATE_RECORD.toString());
-        Log.i(LOGGER, "New created record: " + tempRecord.toString());
-
-        Record record = dataSource.createRecord(tempRecord);
-        values.add(record);
-        mAdapter.notifyDataSetChanged();
-        Log.i(LOGGER, "Update list");
+        addNewRecord(tempRecord);
       } else if (requestCode == UPDATE_RECORD) {
-        Record tempRecord = (Record) data.getParcelableExtra(UPDATE_RECORD.toString());
-        Log.i(LOGGER, "Updated record: " + tempRecord.toString());
-        // TODO: update values list after update data in db
-        Record record = dataSource.updateRecord(tempRecord);
-        values.add(record);
-        mAdapter.notifyDataSetChanged();
-        Log.i(LOGGER, "Update list");
+        updateRecord(tempRecord);
       }
     }
   }
 
+  private void addNewRecord(Record mRecord) {
+    Log.i(LOGGER, "New created record: " + mRecord.toString());
+    Record record = dataSource.createRecord(mRecord);
+    values.add(record);
+    mAdapter.notifyDataSetChanged();
+    Log.i(LOGGER, "Update list");
+  }
+
+  private void updateRecord(Record mRecord) {
+    Log.i(LOGGER, "Updated record: " + mRecord.toString());
+    int result = dataSource.updateRecord(mRecord);
+    if (result > 0) {
+      values.remove(selectedRecordPosition);
+      values.add(selectedRecordPosition, mRecord);
+      mAdapter.notifyDataSetChanged();
+      Log.i(LOGGER, "Update list");
+    }
+  }
   /**
    * The default content for this Fragment has a TextView that is shown when
    * the list is empty. If you would like to change the text, call this method
@@ -188,21 +196,21 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
     DeleteDialog deleteDialog = new DeleteDialog();
     deleteDialog.setTargetFragment(this, DELETE_RECORD);
     deleteDialog.show(getFragmentManager(), DELETE_RECORD.toString());
-    selectedRecord = position;
+    selectedRecordPosition = position;
     return true;
   }
 
   @Override
   public void onDialogPositiveClick() {
-    if (selectedRecord >= 0 && selectedRecord < values.size()) {
-      Record record = values.get(selectedRecord);
+    if (selectedRecordPosition >= 0 && selectedRecordPosition < values.size()) {
+      Record record = values.get(selectedRecordPosition);
       int result = dataSource.deleteRecord(record);
       if (result > 0) {
-        values.remove(selectedRecord);
+        values.remove(selectedRecordPosition);
         Log.i(LOGGER, "Deleted record: " + record);
         mAdapter.notifyDataSetChanged();
       }
-      selectedRecord = -1;
+      selectedRecordPosition = -1;
     } else {
       Log.i(LOGGER, "No Deleted record");
     }

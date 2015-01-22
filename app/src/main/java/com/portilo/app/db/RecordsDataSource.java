@@ -16,9 +16,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
 import com.portilo.app.model.Record;
 
 public class RecordsDataSource {
+
+  private static final String LOGGER = "RecordsDataSource";
 
   // Database fields
   private SQLiteDatabase database;
@@ -46,14 +50,7 @@ public class RecordsDataSource {
 
   public Record createRecord(Record record) {
 
-    // Create ContentValues to add key "column"/value
-    ContentValues values = new ContentValues();
-
-    values.put(MySQLiteHelper.COLUMN_NAME_DATE, record.getDate()); // get date
-    values.put(MySQLiteHelper.COLUMN_NAME_LOCATION, record.getLocation());   // get location
-    values.put(MySQLiteHelper.COLUMN_NAME_VOLUME, record.getVolume());       // get volume
-    values.put(MySQLiteHelper.COLUMN_NAME_TANK, record.getTank());           // get tank
-    values.put(MySQLiteHelper.COLUMN_NAME_ODOMETER, record.getOdometer());   // get odometer
+    ContentValues values = mapRecord2ORM(record);
 
     // Insert
     long insertId = database.insert(MySQLiteHelper.TABLE_FUELING, // table
@@ -69,8 +66,26 @@ public class RecordsDataSource {
     return newRecord;
   }
 
-  public Record updateRecord(Record record) {
-    return new Record();
+  private ContentValues mapRecord2ORM(Record record) {
+    // Create ContentValues to add key "column"/value
+    ContentValues values = new ContentValues();
+
+    values.put(MySQLiteHelper.COLUMN_NAME_DATE, record.getDate()); // get date
+    values.put(MySQLiteHelper.COLUMN_NAME_LOCATION, record.getLocation());   // get location
+    values.put(MySQLiteHelper.COLUMN_NAME_VOLUME, record.getVolume());       // get volume
+    values.put(MySQLiteHelper.COLUMN_NAME_TANK, record.getTank());           // get tank
+    values.put(MySQLiteHelper.COLUMN_NAME_ODOMETER, record.getOdometer());   // get odometer
+
+    return values;
+  }
+
+  public int updateRecord(Record record) {
+
+    ContentValues values = mapRecord2ORM(record);
+
+    long id = record.getId();
+    Log.i(LOGGER, "Record update with id: " + id);
+    return database.update(MySQLiteHelper.TABLE_FUELING, values, MySQLiteHelper.COLUMN_NAME_ID + " = " + id, null);
   }
 
   public int deleteRecord(Record record) {
