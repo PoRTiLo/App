@@ -33,7 +33,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Tankovano (l)"
+                        android:text="@string/tank_add_new_record"
                         android:id="@+id/textView"
                         android:layout_weight="3"/>
 
@@ -44,7 +44,10 @@
                         android:layout_weight="2"
                         android:ems="10"
                         android:id="@+id/volumeEditText"
-                        android:gravity="right"
+                        android:gravity="end"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:focusableInTouchMode="true"
                         android:textIsSelectable="false"/>
 
                 </LinearLayout>
@@ -60,7 +63,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Stav nadrze (l)"
+                        android:text="@string/volume_add_new_record"
                         android:id="@+id/textView1"
                         android:layout_weight="3"/>
 
@@ -70,7 +73,7 @@
                         android:inputType="number"
                         android:ems="10"
                         android:id="@+id/tankEditText"
-                        android:gravity="right"
+                        android:gravity="end"
                         android:layout_weight="2"
                         android:textIsSelectable="false"/>
 
@@ -87,7 +90,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Stav tachometru (km)"
+                        android:text="@string/odometer_add_new_record"
                         android:id="@+id/textView2"
                         android:layout_weight="3"/>
 
@@ -99,7 +102,7 @@
                         android:id="@+id/odometerEditText"
                         android:textIsSelectable="false"
                         android:layout_weight="2"
-                        android:gravity="right"/>
+                        android:gravity="end"/>
 
                 </LinearLayout>
 
@@ -114,17 +117,17 @@
                         android:id="@+id/timeButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="time"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:text="@string/time_add_new_record"
                         android:onClick="showTimePickerDialog" />
 
                     <Button
                         android:id="@+id/dateButton"
                         android:layout_width="match_parent"
+                        style="?android:attr/buttonBarButtonStyle"
                         android:layout_height="wrap_content"
-                        android:text="today"
+                        android:text="@string/today_add_new_record"
                         android:onClick="showDatePickerDialog" />
-
-
 
                 </LinearLayout>
 
@@ -147,7 +150,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Misto"
+                    android:text="@string/location_add_new_record"
                     android:id="@+id/textView5"/>
 
                 <EditText
@@ -158,12 +161,6 @@
                     android:id="@+id/locationEditText"
                     android:lines="4"/>
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
-                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

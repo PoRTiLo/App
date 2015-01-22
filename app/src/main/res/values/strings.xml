@@ -13,4 +13,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_main_activity2">MainActivity2</string>
 
+    <!-- add new record -->
+    <string name="tank_add_new_record">Tankováno (l)</string>
+    <string name="volume_add_new_record">Stav nádrže (l)</string>
+    <string name="odometer_add_new_record">Stav tachometru (km)</string>
+    <string name="location_add_new_record">Místo</string>
+    <string name="time_add_new_record">Čas</string>
+    <string name="today_add_new_record">Dnes</string>
 </resources>
