@@ -33,6 +33,9 @@ public class RecordsDataSource {
           MySQLiteHelper.COLUMN_NAME_TANK,
           MySQLiteHelper.COLUMN_NAME_ODOMETER};
 
+  // TODO: get max records
+  private final static int MAX_RECORDS = 40;
+
   public RecordsDataSource(Context context) {
     dbHelper = new MySQLiteHelper(context);
   }
@@ -100,9 +103,11 @@ public class RecordsDataSource {
             allColumns, null, null, null, null, MySQLiteHelper.COLUMN_NAME_DATE + " DESC");
 
     cursor.moveToFirst();
-    while (!cursor.isAfterLast()) {
+    int numberRecords = 0;
+    while (!cursor.isAfterLast() && numberRecords < MAX_RECORDS) {
       Record record = cursorToRecord(cursor);
       records.add(record);
+      numberRecords++;
       cursor.moveToNext();
     }
 
