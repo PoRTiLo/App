@@ -8,7 +8,6 @@ package com.portilo.app.db;
  */
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -95,10 +94,10 @@ public class RecordsDataSource {
   }
 
   public List<Record> getAllRecords() {
-    List<Record> records = new ArrayList<Record>();
+    List<Record> records = new ArrayList<>();
 
     Cursor cursor = database.query(MySQLiteHelper.TABLE_FUELING,
-            allColumns, null, null, null, null, null);
+            allColumns, null, null, null, null, MySQLiteHelper.COLUMN_NAME_DATE + " DESC");
 
     cursor.moveToFirst();
     while (!cursor.isAfterLast()) {

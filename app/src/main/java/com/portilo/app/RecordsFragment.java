@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.TextView;
 
 
 import com.portilo.app.db.RecordsDataSource;
@@ -56,8 +54,7 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
   public static final Integer DELETE_RECORD = 4;
 
   public static RecordsFragment newInstance() {
-    RecordsFragment fragment = new RecordsFragment();
-    return fragment;
+    return new RecordsFragment();
   }
 
   /**
@@ -74,17 +71,17 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
     dataSource.open();
     values = dataSource.getAllRecords();
     // Adapter to display your content
-    mAdapter = new ArrayAdapter<Record>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, values);
+    mAdapter = new RecordAdapter(getActivity(), values);
     setHasOptionsMenu(true);
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_item, container, false);
+    View view = inflater.inflate(R.layout.fragment_records, container, false);
 
     // Set the adapter
     mListView = (AbsListView) view.findViewById(android.R.id.list);
-    ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+    mListView.setAdapter(mAdapter);
 
     // Set OnItemClickListener so we can be notified on item clicks
     mListView.setOnItemClickListener(this);
@@ -150,8 +147,8 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (resultCode == getActivity().RESULT_OK) {
-      Record tempRecord = (Record) data.getParcelableExtra(CREATE_RECORD.toString());
+    if (resultCode == android.app.Activity.RESULT_OK) {
+      Record tempRecord = data.getParcelableExtra(CREATE_RECORD.toString());
       if (requestCode == CREATE_RECORD) {
         addNewRecord(tempRecord);
       } else if (requestCode == UPDATE_RECORD) {
@@ -163,7 +160,7 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
   private void addNewRecord(Record mRecord) {
     Log.i(LOGGER, "New created record: " + mRecord.toString());
     Record record = dataSource.createRecord(mRecord);
-    values.add(record);
+    values.add(0, record);
     mAdapter.notifyDataSetChanged();
     Log.i(LOGGER, "Update list");
   }
@@ -178,18 +175,18 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
       Log.i(LOGGER, "Update list");
     }
   }
-  /**
-   * The default content for this Fragment has a TextView that is shown when
-   * the list is empty. If you would like to change the text, call this method
-   * to supply the text it should use.
-   */
-  public void setEmptyText(CharSequence emptyText) {
-    View emptyView = mListView.getEmptyView();
-
-    if (emptyView instanceof TextView) {
-      ((TextView) emptyView).setText(emptyText);
-    }
-  }
+//  /**
+//   * The default content for this Fragment has a TextView that is shown when
+//   * the list is empty. If you would like to change the text, call this method
+//   * to supply the text it should use.
+//   */
+//  public void setEmptyText(CharSequence emptyText) {
+//    View emptyView = mListView.getEmptyView();
+//
+//    if (emptyView instanceof TextView) {
+//      ((TextView) emptyView).setText(emptyText);
+//    }
+//  }
 
   @Override
   public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {

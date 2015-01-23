@@ -71,7 +71,7 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
     if (id == R.id.menu_item_new) {
       // send update date back
       if (!fillRecordFromEditor()) {
-        showErros();
+        showErrors();
       } else {
         Intent dataBackIntent = new Intent();
         dataBackIntent.putExtra(RecordsFragment.CREATE_RECORD.toString(), mRecord);
@@ -86,20 +86,20 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
     return super.onOptionsItemSelected(item);
   }
 
-  private void showErros() {
-    Toast toast = Toast.makeText(getApplicationContext(), "Vyplňte všechna povinná políčka!", Toast.LENGTH_SHORT);
+  private void showErrors() {
+    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.required_warning), Toast.LENGTH_SHORT);
     toast.show();
 
     if (odometerEditText.getText().toString().isEmpty()) {
-      odometerEditText.setError("Pole je povinné!");
+      odometerEditText.setError(getString(R.string.required));
     }
 
     if (tankEditText.getText().toString().isEmpty()) {
-      tankEditText.setError("Pole je povinné!");
+      tankEditText.setError(getString(R.string.required));
     }
 
     if (volumeEditText.getText().toString().isEmpty()) {
-      volumeEditText.setError("Pole je povinné!");
+      volumeEditText.setError(getString(R.string.required));
     }
   }
 
@@ -111,16 +111,15 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
     volumeEditText = (EditText) findViewById(R.id.volumeEditText);
     tankEditText = (EditText) findViewById(R.id.tankEditText);
 
-    volumeEditText.setError(volumeEditText.getText().toString().length() <= 0 ? "Pole je povinné!" : null);
+    volumeEditText.setError(volumeEditText.getText().toString().length() <= 0 ? getString(R.string.required) : null);
     volumeEditText.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
       @Override
       public void onTextChanged(CharSequence s, int start, int before, int count) {
-        Log.i("aa", volumeEditText.getText().toString());
         if (volumeEditText.getText().length() <= 0 || volumeEditText.getText() == null ||
                 volumeEditText.getText().toString().trim().equalsIgnoreCase("")) {
-          volumeEditText.setError("Pole je povinné!");
+          volumeEditText.setError(getString(R.string.required));
         } else {
           volumeEditText.setError(null);
         }
@@ -130,14 +129,14 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
 
     });
 
-    tankEditText.setError(volumeEditText.getText().toString().length() <= 0 ? "Pole je povinné!" : null);
+    tankEditText.setError(volumeEditText.getText().toString().length() <= 0 ? getString(R.string.required) : null);
     tankEditText.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
       @Override
       public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (tankEditText.getText().toString().trim().equals("")) {
-          tankEditText.setError("Pole je povinné!");
+          tankEditText.setError(getString(R.string.required));
         } else {
           tankEditText.setError(null);
         }
@@ -146,14 +145,14 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
       public void afterTextChanged(Editable s) {}
     });
 
-    odometerEditText.setError(volumeEditText.getText().toString().length() <= 0 ? "Pole je povinné!" : null);
+    odometerEditText.setError(volumeEditText.getText().toString().length() <= 0 ? getString(R.string.required) : null);
     odometerEditText.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
       @Override
       public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (odometerEditText.getText().toString().trim().equals("")) {
-          odometerEditText.setError("Pole je povinné!");
+          odometerEditText.setError(getString(R.string.required));
         } else {
           odometerEditText.setError(null);
         }

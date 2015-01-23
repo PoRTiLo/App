@@ -71,6 +71,27 @@ public class Record implements Parcelable {
     this.odometer = odometer;
   }
 
+  public int getDistance() {
+    int distance = odometer - previousOdometer;
+    return distance < 1 ? 0 : distance;
+  }
+
+  public double getConsumption() {
+    int distance = odometer - previousOdometer;
+
+    double consumption;
+
+    if (distance < 1) {
+      consumption = 0.0;
+    } else {
+      consumption = (volume + previousTank - tank) / distance * 100.0;
+
+      consumption = Math.round(consumption * 100.0) / 100.0;
+    }
+
+    return consumption;
+  }
+
   // Will be used by the ArrayAdapter in the ListView
   @Override
   public String toString() {

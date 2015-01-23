@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
+import com.portilo.app.view.NavigationDrawerFragment;
+
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, RecordsFragment.OnFragmentInteractionListener {
 
