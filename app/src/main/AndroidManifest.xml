@@ -18,10 +18,8 @@
         </activity>
         <activity
             android:name=".AddNewRecordActivity"
+            android:parentActivityName=".MainActivity"
             android:label="@string/title_activity_add_new_item" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
         </activity>
     </application>
 

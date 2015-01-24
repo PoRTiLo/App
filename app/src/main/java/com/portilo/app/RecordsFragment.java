@@ -1,9 +1,11 @@
 package com.portilo.app;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 
 import com.portilo.app.db.RecordsDataSource;
@@ -125,6 +128,7 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     inflater.inflate(R.menu.main, menu);
+//    ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.title_section1));
     super.onCreateOptionsMenu(menu,inflater);
   }
 
@@ -190,7 +194,7 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
 
   @Override
   public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-    DeleteDialog deleteDialog = new DeleteDialog();
+    DialogFragment deleteDialog = DeleteDialog.newInstance(values.get(position));
     deleteDialog.setTargetFragment(this, DELETE_RECORD);
     deleteDialog.show(getFragmentManager(), DELETE_RECORD.toString());
     selectedRecordPosition = position;
@@ -211,6 +215,8 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
     } else {
       Log.i(LOGGER, "No Deleted record");
     }
+    Toast toast = Toast.makeText(getActivity(), getString(R.string.record_deleted), Toast.LENGTH_SHORT);
+    toast.show();
   }
 
   @Override

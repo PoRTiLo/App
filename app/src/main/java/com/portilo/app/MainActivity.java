@@ -6,12 +6,15 @@ import android.support.v7.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 import com.portilo.app.view.NavigationDrawerFragment;
+
+import java.util.logging.Logger;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, RecordsFragment.OnFragmentInteractionListener {
@@ -21,6 +24,8 @@ public class MainActivity extends ActionBarActivity
 
   // Used to store the last screen title. For use in {@link #restoreActionBar()}.
   private CharSequence mTitle;
+
+  private static final String LOGGER = "MainActivity";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,10 @@ public class MainActivity extends ActionBarActivity
 
   @Override
   public void onNavigationDrawerItemSelected(int position) {
+
+    onSectionAttached(position);
+    // TODO not work goods
+    restoreActionBar();
     // update the main content by replacing fragments
     FragmentManager fragmentManager = getFragmentManager();
     if (position == 0) {
@@ -45,12 +54,11 @@ public class MainActivity extends ActionBarActivity
     } else if (position == 2 ) {
       fragmentManager.beginTransaction().replace(R.id.container, AboutAppFragment.newInstance()).commit();
     }
-    onSectionAttached(position);
-    // TODO not work goods
-    restoreActionBar();
+
   }
 
   public void onSectionAttached(int number) {
+    Log.i(LOGGER, "onSectionAttached: " + number);
     switch (number) {
       case 0:
         mTitle = getString(R.string.title_section1);

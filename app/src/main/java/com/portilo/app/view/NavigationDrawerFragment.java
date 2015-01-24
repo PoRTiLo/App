@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +32,7 @@ import com.portilo.app.R;
  */
 public class NavigationDrawerFragment extends Fragment {
 
+  private static final String LOGGER = "NavigationDrawerFragment";
   /**
    * Remember the position of the selected item.
    */
@@ -246,11 +248,6 @@ public class NavigationDrawerFragment extends Fragment {
       return true;
     }
 
-/*    if (item.getItemId() == R.id.action_example) {
-      Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
-      return true;
-    }*/
-
     return super.onOptionsItemSelected(item);
   }
 
@@ -259,6 +256,7 @@ public class NavigationDrawerFragment extends Fragment {
    * 'context', rather than just what's in the current screen.
    */
   private void showGlobalContextActionBar() {
+    Log.i(LOGGER, "showGlobalContextActionBar");
     ActionBar actionBar = getActionBar();
     actionBar.setDisplayShowTitleEnabled(true);
     actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);

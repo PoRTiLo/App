@@ -78,6 +78,8 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
         Log.i(LOGGER, mRecord.toString());
         setResult(Activity.RESULT_OK, dataBackIntent);
 
+        Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.record_added), Toast.LENGTH_SHORT);
+        toast.show();
         finish();
       }
       return true;

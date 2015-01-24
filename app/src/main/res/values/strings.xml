@@ -24,4 +24,9 @@
     <string name="required">Pole je povinné!</string>
     <string name="required_warning">Vyplňte všechna povinná políčka!</string>
 
+    <string name="record_added">Záznam byl přidán!</string>
+
+    <!--Delete record-->
+    <string name="record_deleted">Záznam byl smazán!</string>
+
 </resources>
