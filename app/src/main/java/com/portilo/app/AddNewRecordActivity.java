@@ -68,7 +68,7 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
     int id = item.getItemId();
 
     //noinspection SimplifiableIfStatement
-    if (id == R.id.menu_item_new) {
+    if (id == R.id.menu_record_save) {
       // send update date back
       if (!fillRecordFromEditor()) {
         showErrors();

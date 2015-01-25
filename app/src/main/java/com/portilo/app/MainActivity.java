@@ -45,7 +45,7 @@ public class MainActivity extends ActionBarActivity
     onSectionAttached(position);
     // TODO not work goods
     restoreActionBar();
-    // update the main content by replacing fragments
+    // update the menu content by replacing fragments
     FragmentManager fragmentManager = getFragmentManager();
     if (position == 0) {
       fragmentManager.beginTransaction().replace(R.id.container, RecordsFragment.newInstance()).commit();

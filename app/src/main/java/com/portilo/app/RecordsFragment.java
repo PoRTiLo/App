@@ -5,7 +5,6 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -127,7 +126,7 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
 
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    inflater.inflate(R.menu.main, menu);
+    inflater.inflate(R.menu.menu_records, menu);
 //    ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.title_section1));
     super.onCreateOptionsMenu(menu,inflater);
   }
@@ -140,7 +139,7 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
     int id = item.getItemId();
 
     // noinspection SimplifiableIfStatement
-    if (id == R.id.menu_item_new) {
+    if (id == R.id.menu_record_new) {
       Intent intent = new Intent(getActivity(), AddNewRecordActivity.class);
       startActivityForResult(intent, CREATE_RECORD);
       return true;

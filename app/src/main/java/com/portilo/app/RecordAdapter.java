@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.portilo.app.model.Record;
@@ -37,13 +38,17 @@ public class RecordAdapter extends ArrayAdapter<Record> {
     // 2. Get rowView from inflater
     View rowView = inflater.inflate(R.layout.fragment_records_list_row, parent, false);
 
-    // 3. Get the two text view from the rowView
+    // 3. Get the text view from the rowView
     TextView dateLocation = (TextView) rowView.findViewById(R.id.row_date_location);
     TextView odometerDistance = (TextView) rowView.findViewById(R.id.row_odometer_distance);
     TextView volumeTank = (TextView) rowView.findViewById(R.id.row_volume_tank);
     TextView consumption = (TextView) rowView.findViewById(R.id.row_consumption);
+    CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.checkBox);
 
-    // 4. Set the text for textView
+    // TODO: now hide check box
+    checkBox.setVisibility(View.INVISIBLE);
+
+    // 4. Set the text
     Record mRecord = recordsArrayList.get(position);
     String formatDate = String.format("%td.%<tm.%<tY %<tR", new Date(mRecord.getDate()));
     dateLocation.setText(formatDate + " " + mRecord.getLocation());

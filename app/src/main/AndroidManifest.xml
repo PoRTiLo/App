@@ -19,7 +19,7 @@
         <activity
             android:name=".AddNewRecordActivity"
             android:parentActivityName=".MainActivity"
-            android:label="@string/title_activity_add_new_item" >
+            android:label="@string/record_add" >
         </activity>
     </application>
 

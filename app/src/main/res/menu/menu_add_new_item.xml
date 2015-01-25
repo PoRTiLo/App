@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.portilo.app.AddNewRecordActivity">
     <item
-        android:title="@string/title_activity_add_new_item"
-        android:id="@+id/menu_item_new"
+        android:title="@string/save"
+        android:id="@+id/menu_record_save"
         android:icon="@drawable/ic_action_accept"
         app:showAsAction="always"/>
 </menu>
