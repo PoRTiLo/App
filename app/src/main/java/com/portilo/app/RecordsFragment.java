@@ -18,7 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 
-import com.portilo.app.db.RecordsDataSource;
+import com.portilo.app.persistence.RecordsDataSource;
 import com.portilo.app.model.Record;
 import com.portilo.app.view.DeleteDialog;
 

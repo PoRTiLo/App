@@ -52,7 +52,7 @@ public class RecordAdapter extends ArrayAdapter<Record> {
     Record mRecord = recordsArrayList.get(position);
     String formatDate = String.format("%td.%<tm.%<tY %<tR", new Date(mRecord.getDate()));
     dateLocation.setText(formatDate + " " + mRecord.getLocation());
-    odometerDistance.setText(mRecord.getOdometer() + " km (+ " + mRecord.getDistance() + ") km");
+    odometerDistance.setText(mRecord.getOdometer() + " km (+" + mRecord.getDistance() + " km)");
     volumeTank.setText(mRecord.getVolume() + " l (" + mRecord.getTank() + "l)");
     consumption.setText("1/100 km: " + mRecord.getConsumption());
 

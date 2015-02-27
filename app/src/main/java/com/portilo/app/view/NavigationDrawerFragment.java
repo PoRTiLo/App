@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.portilo.app.R;
+import com.portilo.app.VehicleFragment;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -73,6 +75,12 @@ public class NavigationDrawerFragment extends Fragment {
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
     mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
+    SharedPreferences vehiclePref = getActivity().getSharedPreferences(VehicleFragment.PREFS_NAME, 0);
+    String vehicleName = vehiclePref.getString("vehicle", "");
+    if (!TextUtils.isEmpty(vehicleName)) {
+      mCurrentSelectedPosition = 1;
+    }
+
     if (savedInstanceState != null) {
       mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
       mFromSavedInstanceState = true;
@@ -103,6 +111,7 @@ public class NavigationDrawerFragment extends Fragment {
             android.R.layout.simple_list_item_activated_1,
             android.R.id.text1,
             new String[]{
+                    "Vozidlo",
                     getString(R.string.title_section1),
                     getString(R.string.title_section2),
                     getString(R.string.title_section3),
@@ -260,7 +269,7 @@ public class NavigationDrawerFragment extends Fragment {
     ActionBar actionBar = getActionBar();
     actionBar.setDisplayShowTitleEnabled(true);
     actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-    actionBar.setTitle(R.string.app_name);
+    /*actionBar.setTitle(R.string.app_name);*/
   }
 
   private ActionBar getActionBar() {

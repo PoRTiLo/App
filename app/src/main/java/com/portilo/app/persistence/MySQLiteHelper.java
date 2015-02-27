@@ -1,4 +1,4 @@
-package com.portilo.app.db;
+package com.portilo.app.persistence;
 
 /**
  * Created by HC on 11.01.2015.

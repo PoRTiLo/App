@@ -14,8 +14,6 @@ import android.support.v4.widget.DrawerLayout;
 
 import com.portilo.app.view.NavigationDrawerFragment;
 
-import java.util.logging.Logger;
-
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, RecordsFragment.OnFragmentInteractionListener {
 
@@ -48,10 +46,12 @@ public class MainActivity extends ActionBarActivity
     // update the menu content by replacing fragments
     FragmentManager fragmentManager = getFragmentManager();
     if (position == 0) {
-      fragmentManager.beginTransaction().replace(R.id.container, RecordsFragment.newInstance()).commit();
+      fragmentManager.beginTransaction().replace(R.id.container, VehicleFragment.newInstance()).commit();
     } else if (position == 1) {
+      fragmentManager.beginTransaction().replace(R.id.container, RecordsFragment.newInstance()).commit();
+    } else if (position == 2) {
       fragmentManager.beginTransaction().replace(R.id.container, StatisticFragment.newInstance()).commit();
-    } else if (position == 2 ) {
+    } else if (position == 3 ) {
       fragmentManager.beginTransaction().replace(R.id.container, AboutAppFragment.newInstance()).commit();
     }
 
@@ -61,12 +61,15 @@ public class MainActivity extends ActionBarActivity
     Log.i(LOGGER, "onSectionAttached: " + number);
     switch (number) {
       case 0:
-        mTitle = getString(R.string.title_section1);
+        mTitle = getString(R.string.title_section4);
         break;
       case 1:
-        mTitle = getString(R.string.title_section2);
+        mTitle = getString(R.string.title_section1);
         break;
       case 2:
+        mTitle = getString(R.string.title_section2);
+        break;
+      case 3:
         mTitle = getString(R.string.title_section3);
         break;
     }

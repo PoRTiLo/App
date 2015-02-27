@@ -5,6 +5,7 @@
     <string name="title_section1">Záznamy</string>
     <string name="title_section2">Statistiky</string>
     <string name="title_section3">O aplikaci</string>
+    <string name="title_section4">Vozidlo</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -27,6 +28,7 @@
     <string name="required_warning">Vyplňte všechna povinná políčka!</string>
 
     <string name="record_added">Záznam byl přidán!</string>
+    <string name="vehicle_added">Vozdilo bylo uloženo!</string>
 
     <!--Delete record-->
     <string name="record_deleted">Záznam byl smazán!</string>

@@ -1,4 +1,4 @@
-package com.portilo.app.db;
+package com.portilo.app.persistence;
 
 /**
  * Created by HC on 11.01.2015.
@@ -15,6 +15,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.portilo.app.model.Record;
@@ -100,7 +101,7 @@ public class RecordsDataSource {
     List<Record> records = new ArrayList<>();
 
     Cursor cursor = database.query(MySQLiteHelper.TABLE_FUELING,
-            allColumns, null, null, null, null, MySQLiteHelper.COLUMN_NAME_DATE + " DESC");
+            allColumns, null, null, null, null, MySQLiteHelper.COLUMN_NAME_DATE + " ASC");
 
     cursor.moveToFirst();
     int numberRecords = 0;
@@ -129,5 +130,55 @@ public class RecordsDataSource {
     return record;
   }
 
+  public Double totalVolume() {
+    Cursor cursor = database.query(MySQLiteHelper.TABLE_FUELING, new String[]{MySQLiteHelper.COLUMN_NAME_VOLUME}, null, null, null, null, null);
+
+    cursor.moveToFirst();
+    Double totalVolume = 0.0;
+    while (!cursor.isAfterLast()) {
+      Double volume = cursor.getDouble(cursor.getColumnIndex(MySQLiteHelper.COLUMN_NAME_VOLUME));
+      totalVolume += volume;
+      cursor.moveToNext();
+    }
+    // Make sure to close the cursor
+    cursor.close();
+    return totalVolume;
+  }
+
+  public Double minimalVolume() {
+    Cursor cursor = database.query(MySQLiteHelper.TABLE_FUELING,
+            new String[]{ "min(" + MySQLiteHelper.COLUMN_NAME_VOLUME + ")" }, null, null, null, null, null);
+    cursor.moveToFirst();
+    Double minVolume = cursor.getDouble(0);
+    // Make sure to close the cursor
+    cursor.close();
+    return minVolume;
+  }
+
+  public Double maximalVolume() {
+    Cursor cursor = database.query(MySQLiteHelper.TABLE_FUELING,
+            new String[]{ "max(" + MySQLiteHelper.COLUMN_NAME_VOLUME + ")" }, null, null, null, null, null);
+    cursor.moveToFirst();
+    Double maxVolume = cursor.getDouble(0);
+    // Make sure to close the cursor
+    cursor.close();
+    return maxVolume;
+  }
+
+  public Long totalVolumes() {
+    String sql = "SELECT COUNT(*) FROM " + MySQLiteHelper.TABLE_FUELING;
+    SQLiteStatement statement = database.compileStatement(sql);
+    long count = statement.simpleQueryForLong();
+    return count;
+  }
+
+  public Record getNewestRecord() {
+    String sql = "SELECT * FROM " + MySQLiteHelper.TABLE_FUELING + " ORDER BY " + MySQLiteHelper.COLUMN_NAME_DATE + " DESC LIMIT 1;";
+    Cursor cursor = database.rawQuery(sql, null);
+    cursor.moveToFirst();
+    Record record = cursorToRecord(cursor);
+
+    return record;
+  }
 }
 
