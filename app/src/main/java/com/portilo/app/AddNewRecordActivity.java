@@ -29,7 +29,6 @@ import java.util.Calendar;
 
 public class AddNewRecordActivity extends ActionBarActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-  private long id;
   private Button dateButton;
   private Button timeButton;
   private EditText odometerEditText;
@@ -206,12 +205,14 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
   }
 
   public void showTimePickerDialog(View v) {
-    DialogFragment newFragment = new TimePickerFragment();
+    Button time = (Button) v.findViewById(R.id.timeButton);
+    DialogFragment newFragment = TimePickerFragment.newInstance(time.getText().toString());
     newFragment.show(getFragmentManager(), "timePicker");
   }
 
   public void showDatePickerDialog(View v) {
-    DialogFragment newFragment = new DatePickerFragment();
+    Button date = (Button) v.findViewById(R.id.dateButton);
+    DialogFragment newFragment = DatePickerFragment.newInstance(date.getText().toString());
     newFragment.show(getFragmentManager(), "datePicker");
   }
 

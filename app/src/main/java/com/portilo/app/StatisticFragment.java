@@ -85,20 +85,17 @@ public class StatisticFragment extends Fragment {
 
     Record record = dataSource.getNewestRecord();
     if (record != null) {
-        totalTachometerTextView.setText(record.getDistance() + "");
-        Vehicle vehicle = utils.loadVehicle(getActivity());
-        if (vehicle != null) {
-            Integer totalDistance = record.getDistance() - vehicle.getInitialOdometer();
-            totalDistanceTextView.setText(totalDistance.toString());
-        } else {
-            totalDistanceTextView.setText("0");
-        }
-
+      totalTachometerTextView.setText(record.getDistance() + "");
+      Vehicle vehicle = utils.loadVehicle(getActivity());
+      if (vehicle != null) {
+        Integer totalDistance = record.getDistance() - vehicle.getInitialOdometer();
+        totalDistanceTextView.setText(totalDistance.toString());
+      } else {
+        totalDistanceTextView.setText("");
+      }
     } else {
-        totalTachometerTextView.setText("0");
-        totalDistanceTextView.setText("0");
+      totalTachometerTextView.setText("");
+      totalDistanceTextView.setText("");
     }
-
-
   }
 }

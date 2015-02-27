@@ -149,11 +149,7 @@ public class RecordsDataSource {
     Cursor cursor = database.query(MySQLiteHelper.TABLE_FUELING,
             new String[]{ "min(" + MySQLiteHelper.COLUMN_NAME_VOLUME + ")" }, null, null, null, null, null);
     cursor.moveToFirst();
-    Double minVolume = null;
-    if (!cursor.isAfterLast()) {
-        minVolume = cursor.getDouble(0);
-        // Make sure to close the cursor
-    }
+    Double minVolume = !cursor.isAfterLast() ? cursor.getDouble(0) : null;
     cursor.close();
     return minVolume;
   }
@@ -162,10 +158,7 @@ public class RecordsDataSource {
     Cursor cursor = database.query(MySQLiteHelper.TABLE_FUELING,
             new String[]{ "max(" + MySQLiteHelper.COLUMN_NAME_VOLUME + ")" }, null, null, null, null, null);
     cursor.moveToFirst();
-      Double maxVolume = null;
-      if (!cursor.isAfterLast()) {
-          maxVolume = cursor.getDouble(0);
-      }
+    Double maxVolume = !cursor.isAfterLast() ? cursor.getDouble(0) : null;
     // Make sure to close the cursor
     cursor.close();
     return maxVolume;
@@ -181,13 +174,9 @@ public class RecordsDataSource {
   public Record getNewestRecord() {
     String sql = "SELECT * FROM " + MySQLiteHelper.TABLE_FUELING + " ORDER BY " + MySQLiteHelper.COLUMN_NAME_DATE + " DESC LIMIT 1;";
     Cursor cursor = database.rawQuery(sql, null);
-      cursor.moveToFirst();
-      Record record = null;
-      if (!cursor.isAfterLast()) {
-
-          record = cursorToRecord(cursor);
-      }
-      cursor.close();
+    cursor.moveToFirst();
+    Record record = !cursor.isAfterLast() ? cursorToRecord(cursor) : null;
+    cursor.close();
     return record;
   }
 }
