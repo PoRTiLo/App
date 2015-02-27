@@ -239,10 +239,15 @@ public class RecordsDataSource {
     Record last = new Record();
     last.setOdometer(vehicle.getInitialOdometer());
     last.setTank(vehicle.getTankVolume());
+    boolean first = true;
     for (Record record : records) {
       Double consumption = Record.countConsumption(last, record);
       maxConsumption = consumption > maxConsumption ? consumption : maxConsumption;
-      minConsumption = consumption > minConsumption ? minConsumption : consumption;
+      if (first) {
+        first = false;
+      } else {
+        minConsumption = consumption > minConsumption ? minConsumption : consumption;
+      }
       last = record;
     }
 

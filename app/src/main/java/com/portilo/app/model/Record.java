@@ -19,9 +19,9 @@ public class Record implements Parcelable {
   private double volume;
   private double tank;
   private int odometer;
-
-  static private int previousOdometer = 0;
-  static private int previousTank = 70;
+  private int previousOdometer = 0;
+  private double previousTank = 70.0;
+  private long previousId;
 
   public long getId() {
     return id;
@@ -93,6 +93,7 @@ public class Record implements Parcelable {
   }
 
   public static double countConsumption(Record last, Record actual) {
+    // TODO: validate data?
     if (last.getOdometer() > actual.getOdometer()) {
       //error data
     }
@@ -103,7 +104,6 @@ public class Record implements Parcelable {
       consumption = 0.0;
     } else {
       consumption = (actual.getVolume() + last.getTank() - actual.getTank()) / distance * 100.0;
-
       consumption = Math.round(consumption * 100.0) / 100.0;
     }
 
@@ -140,6 +140,7 @@ public class Record implements Parcelable {
     String returnString = ", location:" + location + ", volume:" + volume + ", odometer:" + odometer + ", tank:" + tank + ", date:" + new Date(date).toString();
     return returnString;
   }
+
 
   public Record() {
 
