@@ -92,6 +92,24 @@ public class Record implements Parcelable {
     return consumption;
   }
 
+  public static double countConsumption(Record last, Record actual) {
+    if (last.getOdometer() > actual.getOdometer()) {
+      //error data
+    }
+
+    int distance = actual.getOdometer() - last.getOdometer();
+    double consumption;
+    if (distance < 1) {
+      consumption = 0.0;
+    } else {
+      consumption = (actual.getVolume() + last.getTank() - actual.getTank()) / distance * 100.0;
+
+      consumption = Math.round(consumption * 100.0) / 100.0;
+    }
+
+    return consumption;
+  }
+
   // Will be used by the ArrayAdapter in the ListView
   @Override
   public String toString() {

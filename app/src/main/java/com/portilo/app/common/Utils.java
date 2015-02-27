@@ -12,4 +12,6 @@ public interface Utils {
   Vehicle loadVehicle(Activity activity);
 
   void saveVehicle(Activity activity, Vehicle vehicle);
+
+  boolean notNull(Object obj);
 }

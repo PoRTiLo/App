@@ -43,4 +43,9 @@ public class UtilsImpl implements Utils {
     // Commit the edits!
     editor.apply();
   }
+
+  @Override
+  public boolean notNull(Object obj) {
+    return obj != null ? true : false;
+  }
 }

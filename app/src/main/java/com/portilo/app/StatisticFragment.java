@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.portilo.app.common.Utils;
 import com.portilo.app.common.UtilsImpl;
+import com.portilo.app.model.Consumption;
 import com.portilo.app.model.Vehicle;
 import com.portilo.app.persistence.RecordsDataSource;
 import com.portilo.app.model.Record;
@@ -23,20 +24,8 @@ public class StatisticFragment extends Fragment {
     return new StatisticFragment();
   }
 
-  private TextView totalTachometerTextView;
-  private TextView totalDistanceTextView;
-  private TextView totalVolumeTextView;
-  private TextView totalRefuelingTextView;
-  private TextView maximalVolumeTextView;
-  private TextView minimalVolumeTextView;
-  private TextView averageFuelEconomyTextView;
-  private TextView lowestFuelEconomyTextView;
-  private TextView highestFuelEconomyTextView;
-
   private RecordsDataSource dataSource;
-
   private Utils utils = new UtilsImpl();
-
   public StatisticFragment() {}
 
   @Override
@@ -61,15 +50,15 @@ public class StatisticFragment extends Fragment {
   }
 
   private void init(View view) {
-    totalTachometerTextView = (TextView) view.findViewById(R.id.totalTachometerTextView);
-    totalDistanceTextView = (TextView) view.findViewById(R.id.totalDistanceTextView);
-    totalVolumeTextView = (TextView) view.findViewById(R.id.totalVolumeTextView);
-    totalRefuelingTextView = (TextView) view.findViewById(R.id.totalRefuelingTextView);
-    maximalVolumeTextView = (TextView) view.findViewById(R.id.maximalVolumeTextView);
-    minimalVolumeTextView = (TextView) view.findViewById(R.id.minimalVolumeTextView);
-    averageFuelEconomyTextView = (TextView) view.findViewById(R.id.averageFuelEconomyTextView);
-    lowestFuelEconomyTextView = (TextView) view.findViewById(R.id.lowestFuelEconomyTextView);
-    highestFuelEconomyTextView = (TextView) view.findViewById(R.id.highestFuelEconomyTextView);
+    TextView totalTachometerTextView = (TextView) view.findViewById(R.id.totalTachometerTextView);
+    TextView totalDistanceTextView = (TextView) view.findViewById(R.id.totalDistanceTextView);
+    TextView totalVolumeTextView = (TextView) view.findViewById(R.id.totalVolumeTextView);
+    TextView totalRefuelingTextView = (TextView) view.findViewById(R.id.totalRefuelingTextView);
+    TextView maximalVolumeTextView = (TextView) view.findViewById(R.id.maximalVolumeTextView);
+    TextView minimalVolumeTextView = (TextView) view.findViewById(R.id.minimalVolumeTextView);
+    TextView averageFuelEconomyTextView = (TextView) view.findViewById(R.id.averageFuelEconomyTextView);
+    TextView lowestFuelEconomyTextView = (TextView) view.findViewById(R.id.lowestFuelEconomyTextView);
+    TextView highestFuelEconomyTextView = (TextView) view.findViewById(R.id.highestFuelEconomyTextView);
 
     Double totalVolume = dataSource.totalVolume();
     totalVolumeTextView.setText(totalVolume == null ? null : totalVolume.toString());
@@ -96,6 +85,17 @@ public class StatisticFragment extends Fragment {
     } else {
       totalTachometerTextView.setText("");
       totalDistanceTextView.setText("");
+    }
+
+    Consumption consumption = dataSource.getConsumption(getActivity());
+    if (consumption != null) {
+      lowestFuelEconomyTextView.setText(consumption.getMinConsumption().toString());
+      highestFuelEconomyTextView.setText(consumption.getMaxConsumption().toString());
+      averageFuelEconomyTextView.setText(consumption.getAveConsumption().toString());
+    } else {
+      lowestFuelEconomyTextView.setText("");
+      highestFuelEconomyTextView.setText("");
+      averageFuelEconomyTextView.setText("");
     }
   }
 }

@@ -10,6 +10,7 @@ package com.portilo.app.persistence;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -18,7 +19,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
+import com.portilo.app.common.Utils;
+import com.portilo.app.common.UtilsImpl;
+import com.portilo.app.model.Consumption;
 import com.portilo.app.model.Record;
+import com.portilo.app.model.Vehicle;
 
 public class RecordsDataSource {
 
@@ -36,6 +41,7 @@ public class RecordsDataSource {
 
   // TODO: get max records
   private final static int MAX_RECORDS = 40;
+
 
   public RecordsDataSource(Context context) {
     dbHelper = new MySQLiteHelper(context);
@@ -167,8 +173,7 @@ public class RecordsDataSource {
   public Long totalVolumes() {
     String sql = "SELECT COUNT(*) FROM " + MySQLiteHelper.TABLE_FUELING;
     SQLiteStatement statement = database.compileStatement(sql);
-    long count = statement.simpleQueryForLong();
-    return count;
+    return statement.simpleQueryForLong();
   }
 
   public Record getNewestRecord() {
@@ -178,6 +183,70 @@ public class RecordsDataSource {
     Record record = !cursor.isAfterLast() ? cursorToRecord(cursor) : null;
     cursor.close();
     return record;
+  }
+
+  public Double getMinimalConsumption(Activity activity) {
+    List<Record> records = getAllRecords();
+    Double minimalConsumption = 0.0;
+    Utils utils = new UtilsImpl();
+    Vehicle vehicle = utils.loadVehicle(activity);
+    if (vehicle == null) {
+      return minimalConsumption;
+    }
+    Record last = new Record();
+    last.setOdometer(vehicle.getInitialOdometer());
+    last.setTank(vehicle.getTankVolume());
+    for (Record record : records) {
+      Double consumption = Record.countConsumption(last, record);
+      minimalConsumption = consumption > minimalConsumption ? minimalConsumption : consumption;
+      last = record;
+    }
+
+    return minimalConsumption;
+  }
+
+  public Double getMaximalConsumption(Activity activity) {
+    List<Record> records = getAllRecords();
+    Double maximalConsumption = 0.0;
+    Utils utils = new UtilsImpl();
+    Vehicle vehicle = utils.loadVehicle(activity);
+    if (vehicle == null) {
+      return maximalConsumption;
+    }
+    Record last = new Record();
+    last.setOdometer(vehicle.getInitialOdometer());
+    last.setTank(vehicle.getTankVolume());
+    for (Record record : records) {
+      Double consumption = Record.countConsumption(last, record);
+      maximalConsumption = consumption > maximalConsumption ? consumption : maximalConsumption;
+      last = record;
+    }
+
+    return maximalConsumption;
+  }
+
+  public Consumption getConsumption(Activity activity) {
+    List<Record> records = getAllRecords();
+    // TODO average
+    Double aveConsumption = 0.0;
+    Double minConsumption = 0.0;
+    Double maxConsumption = 0.0;
+    Utils utils = new UtilsImpl();
+    Vehicle vehicle = utils.loadVehicle(activity);
+    if (vehicle == null) {
+      return null;
+    }
+    Record last = new Record();
+    last.setOdometer(vehicle.getInitialOdometer());
+    last.setTank(vehicle.getTankVolume());
+    for (Record record : records) {
+      Double consumption = Record.countConsumption(last, record);
+      maxConsumption = consumption > maxConsumption ? consumption : maxConsumption;
+      minConsumption = consumption > minConsumption ? minConsumption : consumption;
+      last = record;
+    }
+
+    return new Consumption(minConsumption, maxConsumption, aveConsumption);
   }
 }
 
