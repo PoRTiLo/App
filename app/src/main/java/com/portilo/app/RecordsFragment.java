@@ -18,6 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 
+import com.portilo.app.common.Utils;
+import com.portilo.app.common.UtilsImpl;
 import com.portilo.app.persistence.RecordsDataSource;
 import com.portilo.app.model.Record;
 import com.portilo.app.view.DeleteDialog;
@@ -49,6 +51,8 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
   private List<Record> values;
 
   private int selectedRecordPosition;
+
+  private Utils utils = new UtilsImpl();
 
   public static final String LOGGER = "RecordsFragment";
   public static final Integer CREATE_RECORD = 2;
@@ -138,13 +142,17 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
     // as you specify a parent activity in AndroidManifest.xml.
     int id = item.getItemId();
 
-    // noinspection SimplifiableIfStatement
-    if (id == R.id.menu_record_new) {
-      Intent intent = new Intent(getActivity(), AddNewRecordActivity.class);
-      startActivityForResult(intent, CREATE_RECORD);
-      return true;
+    if (!utils.vehicleExist(getActivity())) {
+      Toast toast = Toast.makeText(getActivity(), getString(R.string.vehicle_no_exist), Toast.LENGTH_SHORT);
+      toast.show();
+    } else {
+      // noinspection SimplifiableIfStatement
+      if (id == R.id.menu_record_new) {
+        Intent intent = new Intent(getActivity(), AddNewRecordActivity.class);
+        startActivityForResult(intent, CREATE_RECORD);
+        return true;
+      }
     }
-
     return super.onOptionsItemSelected(item);
   }
 

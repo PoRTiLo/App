@@ -8,7 +8,7 @@ import android.widget.EditText;
 public class Vehicle {
   private String vehicleName;
   private String registration;
-  private Float initialOdometer;
+  private Integer initialOdometer;
   private Float initialVolume;
   private Float tankVolume;
 
@@ -20,7 +20,7 @@ public class Vehicle {
     this.registration = registration;
   }
 
-  public void setInitialOdometer(Float initialOdometer) {
+  public void setInitialOdometer(Integer initialOdometer) {
     this.initialOdometer = initialOdometer;
   }
 
@@ -40,7 +40,7 @@ public class Vehicle {
     return registration;
   }
 
-  public Float getInitialOdometer() {
+  public Integer getInitialOdometer() {
     return initialOdometer;
   }
 

@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.portilo.app.common.Utils;
+import com.portilo.app.common.UtilsImpl;
 import com.portilo.app.model.Vehicle;
 
 
@@ -34,11 +36,13 @@ public class VehicleFragment extends Fragment {
   private EditText initialVolumeEditText;
   private EditText tankVolumeEditText;
 
-  public static final String PREFS_NAME = "vehicle";
+
 
   private boolean enableEdit = false;
 
   private Vehicle vehicle;
+
+  private Utils utils = new UtilsImpl();
 
   public VehicleFragment() {}
 
@@ -48,7 +52,7 @@ public class VehicleFragment extends Fragment {
 
     setHasOptionsMenu(true);
     vehicle = vehicle == null ? new Vehicle() : vehicle;
-    loadVehicle();
+    vehicle = utils.loadVehicle(getActivity());
   }
 
   @Override
@@ -83,7 +87,7 @@ public class VehicleFragment extends Fragment {
       if (enableEdit) {
         if (validateAndFill()) {
           enableEdit = false;
-          saveVehicle();
+          utils.saveVehicle(getActivity(), vehicle);
           disableEditTexts();
           item.setIcon(R.drawable.ic_action_edit);
           Toast toast = Toast.makeText(getActivity(), getString(R.string.vehicle_added), Toast.LENGTH_SHORT);
@@ -101,15 +105,6 @@ public class VehicleFragment extends Fragment {
     }
 
     return super.onOptionsItemSelected(item);
-  }
-
-  private void loadVehicle() {
-    SharedPreferences vehiclePref = getActivity().getSharedPreferences(PREFS_NAME, 0);
-    vehicle.setVehicleName(vehiclePref.getString("vehicle", ""));
-    vehicle.setInitialOdometer(vehiclePref.getFloat("initialOdometer", 0.0f));
-    vehicle.setInitialVolume(vehiclePref.getFloat("initialVolume", 0.0f));
-    vehicle.setRegistration(vehiclePref.getString("registration", ""));
-    vehicle.setTankVolume(vehiclePref.getFloat("tankVolume", 0.0f));
   }
 
   private void showErrors() {
@@ -154,7 +149,7 @@ public class VehicleFragment extends Fragment {
       initialOdometerEditText.setError(getString(R.string.required));
       return false;
     }
-    vehicle.setInitialOdometer(Float.parseFloat(initialOdometerEditText.getText().toString()));
+    vehicle.setInitialOdometer(Integer.parseInt(initialOdometerEditText.getText().toString()));
 
     if (TextUtils.isEmpty(initialVolumeEditText.getText())) {
       initialVolumeEditText.setError(getString(R.string.required));
@@ -169,19 +164,6 @@ public class VehicleFragment extends Fragment {
     vehicle.setTankVolume(Float.parseFloat(tankVolumeEditText.getText().toString()));
 
     return true;
-  }
-
-  private void saveVehicle() {
-    SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
-    SharedPreferences.Editor editor = settings.edit();
-    editor.putString("vehicle", vehicle.getVehicleName());
-    editor.putString("registration", vehicle.getRegistration());
-    editor.putFloat("initialOdometer", vehicle.getInitialOdometer());
-    editor.putFloat("tankVolume", vehicle.getTankVolume());
-    editor.putFloat("initialVolume", vehicle.getInitialVolume());
-
-    // Commit the edits!
-    editor.apply();
   }
 
   private void init(View view) {

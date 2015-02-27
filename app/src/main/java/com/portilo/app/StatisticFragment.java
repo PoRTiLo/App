@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.portilo.app.common.Utils;
+import com.portilo.app.common.UtilsImpl;
+import com.portilo.app.model.Vehicle;
 import com.portilo.app.persistence.RecordsDataSource;
 import com.portilo.app.model.Record;
 
@@ -31,6 +34,8 @@ public class StatisticFragment extends Fragment {
   private TextView highestFuelEconomyTextView;
 
   private RecordsDataSource dataSource;
+
+  private Utils utils = new UtilsImpl();
 
   public StatisticFragment() {}
 
@@ -80,5 +85,9 @@ public class StatisticFragment extends Fragment {
 
     Record record = dataSource.getNewestRecord();
     totalTachometerTextView.setText(record.getDistance() + "");
+
+    Vehicle vehicle = utils.loadVehicle(getActivity());
+    Integer totalDistance = record.getDistance() - vehicle.getInitialOdometer();
+    totalDistanceTextView.setText(totalDistance.toString());
   }
 }

@@ -29,6 +29,7 @@
 
     <string name="record_added">Záznam byl přidán!</string>
     <string name="vehicle_added">Vozdilo bylo uloženo!</string>
+    <string name="vehicle_no_exist">Vozidlo nebylo definováno</string>
 
     <!--Delete record-->
     <string name="record_deleted">Záznam byl smazán!</string>

@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 import com.portilo.app.R;
 import com.portilo.app.VehicleFragment;
+import com.portilo.app.common.Utils;
+import com.portilo.app.common.UtilsImpl;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -64,6 +66,8 @@ public class NavigationDrawerFragment extends Fragment {
   private boolean mFromSavedInstanceState;
   private boolean mUserLearnedDrawer;
 
+  private Utils utils = new UtilsImpl();
+
   public NavigationDrawerFragment() {}
 
   @Override
@@ -75,9 +79,7 @@ public class NavigationDrawerFragment extends Fragment {
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
     mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
-    SharedPreferences vehiclePref = getActivity().getSharedPreferences(VehicleFragment.PREFS_NAME, 0);
-    String vehicleName = vehiclePref.getString("vehicle", "");
-    if (!TextUtils.isEmpty(vehicleName)) {
+    if (utils.vehicleExist(getActivity())) {
       mCurrentSelectedPosition = 1;
     }
 
