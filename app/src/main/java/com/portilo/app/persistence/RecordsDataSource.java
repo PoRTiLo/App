@@ -149,8 +149,12 @@ public class RecordsDataSource {
     Cursor cursor = database.query(MySQLiteHelper.TABLE_FUELING,
             new String[]{ "min(" + MySQLiteHelper.COLUMN_NAME_VOLUME + ")" }, null, null, null, null, null);
     cursor.moveToFirst();
-    Double minVolume = cursor.getDouble(0);
-    // Make sure to close the cursor
+    int numberRecords = 0;
+    Double minVolume = null;
+    while (!cursor.isAfterLast() && numberRecords < MAX_RECORDS) {
+        minVolume = cursor.getDouble(0);
+        // Make sure to close the cursor
+    }
     cursor.close();
     return minVolume;
   }
@@ -159,7 +163,11 @@ public class RecordsDataSource {
     Cursor cursor = database.query(MySQLiteHelper.TABLE_FUELING,
             new String[]{ "max(" + MySQLiteHelper.COLUMN_NAME_VOLUME + ")" }, null, null, null, null, null);
     cursor.moveToFirst();
-    Double maxVolume = cursor.getDouble(0);
+      int numberRecords = 0;
+      Double maxVolume = null;
+      while (!cursor.isAfterLast() && numberRecords < MAX_RECORDS) {
+          maxVolume = cursor.getDouble(0);
+      }
     // Make sure to close the cursor
     cursor.close();
     return maxVolume;
