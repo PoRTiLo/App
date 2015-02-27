@@ -149,9 +149,8 @@ public class RecordsDataSource {
     Cursor cursor = database.query(MySQLiteHelper.TABLE_FUELING,
             new String[]{ "min(" + MySQLiteHelper.COLUMN_NAME_VOLUME + ")" }, null, null, null, null, null);
     cursor.moveToFirst();
-    int numberRecords = 0;
     Double minVolume = null;
-    while (!cursor.isAfterLast() && numberRecords < MAX_RECORDS) {
+    if (!cursor.isAfterLast()) {
         minVolume = cursor.getDouble(0);
         // Make sure to close the cursor
     }
@@ -163,9 +162,8 @@ public class RecordsDataSource {
     Cursor cursor = database.query(MySQLiteHelper.TABLE_FUELING,
             new String[]{ "max(" + MySQLiteHelper.COLUMN_NAME_VOLUME + ")" }, null, null, null, null, null);
     cursor.moveToFirst();
-      int numberRecords = 0;
       Double maxVolume = null;
-      while (!cursor.isAfterLast() && numberRecords < MAX_RECORDS) {
+      if (!cursor.isAfterLast()) {
           maxVolume = cursor.getDouble(0);
       }
     // Make sure to close the cursor
@@ -184,9 +182,8 @@ public class RecordsDataSource {
     String sql = "SELECT * FROM " + MySQLiteHelper.TABLE_FUELING + " ORDER BY " + MySQLiteHelper.COLUMN_NAME_DATE + " DESC LIMIT 1;";
     Cursor cursor = database.rawQuery(sql, null);
       cursor.moveToFirst();
-      int numberRecords = 0;
       Record record = null;
-      while (!cursor.isAfterLast() && numberRecords < MAX_RECORDS) {
+      if (!cursor.isAfterLast()) {
 
           record = cursorToRecord(cursor);
       }
