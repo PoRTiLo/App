@@ -183,9 +183,14 @@ public class RecordsDataSource {
   public Record getNewestRecord() {
     String sql = "SELECT * FROM " + MySQLiteHelper.TABLE_FUELING + " ORDER BY " + MySQLiteHelper.COLUMN_NAME_DATE + " DESC LIMIT 1;";
     Cursor cursor = database.rawQuery(sql, null);
-    cursor.moveToFirst();
-    Record record = cursorToRecord(cursor);
+      cursor.moveToFirst();
+      int numberRecords = 0;
+      Record record = null;
+      while (!cursor.isAfterLast() && numberRecords < MAX_RECORDS) {
 
+          record = cursorToRecord(cursor);
+      }
+      cursor.close();
     return record;
   }
 }
