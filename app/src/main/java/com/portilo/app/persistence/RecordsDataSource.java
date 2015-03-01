@@ -227,8 +227,13 @@ public class RecordsDataSource {
 
   public Consumption getConsumption(Activity activity) {
     List<Record> records = getAllRecords();
-    // TODO average
     Double aveConsumption = 0.0;
+    Record newestRecord = getNewestRecord();
+    if (newestRecord != null) {
+      aveConsumption = (totalVolume() - newestRecord.getTank())/newestRecord.getDistance() * 100;
+      aveConsumption = Math.round(aveConsumption * 100.0) / 100.0;
+    }
+
     Double minConsumption = 0.0;
     Double maxConsumption = 0.0;
     Utils utils = new UtilsImpl();
@@ -238,7 +243,7 @@ public class RecordsDataSource {
     }
     Record last = new Record();
     last.setOdometer(vehicle.getInitialOdometer());
-    last.setTank(vehicle.getTankVolume());
+    last.setTank(vehicle.getInitialVolume());
     boolean first = true;
     for (Record record : records) {
       Double consumption = Record.countConsumption(last, record);
