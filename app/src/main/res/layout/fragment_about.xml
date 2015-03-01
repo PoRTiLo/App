@@ -2,14 +2,14 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#0260E4"
+              android:background="@color/app_background"
               android:gravity="center"
               tools:context=".MainActivity$HomeFragment" >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You are in about fragment!"
+        android:text="Aplikace Tankování"
         android:textColor="#ffffff"
         android:textSize="20sp"
         android:textStyle="bold|italic" />

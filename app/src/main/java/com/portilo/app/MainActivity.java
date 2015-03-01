@@ -17,10 +17,14 @@ import com.portilo.app.view.NavigationDrawerFragment;
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, RecordsFragment.OnFragmentInteractionListener {
 
-  // Fragment managing the behaviors, interactions and presentation of the navigation drawer.
+  /**
+   * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
+   */
   private NavigationDrawerFragment mNavigationDrawerFragment;
 
-  // Used to store the last screen title. For use in {@link #restoreActionBar()}.
+  /**
+   * Used to store the last screen title. For use in {@link #restoreActionBar()}.
+   */
   private CharSequence mTitle;
 
   private static final String LOGGER = "MainActivity";
@@ -61,7 +65,7 @@ public class MainActivity extends ActionBarActivity
     Log.i(LOGGER, "onSectionAttached: " + number);
     switch (number) {
       case 0:
-        mTitle = getString(R.string.title_section4);
+        mTitle = getString(R.string.title_section0);
         break;
       case 1:
         mTitle = getString(R.string.title_section1);
