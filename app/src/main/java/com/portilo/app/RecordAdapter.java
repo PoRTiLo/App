@@ -1,5 +1,10 @@
 package com.portilo.app;
 
+/**
+ * Created by HC on 15.02.2015.
+ *
+ */
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +18,6 @@ import com.portilo.app.model.Record;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by portilo on 1/23/2015.
- */
 public class RecordAdapter extends ArrayAdapter<Record> {
 
   private final Context context;

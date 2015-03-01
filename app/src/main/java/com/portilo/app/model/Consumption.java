@@ -1,8 +1,10 @@
 package com.portilo.app.model;
 
 /**
- * Created by jase on 27.02.2015.
+ * Created by HC on 15.02.2015.
+ *
  */
+
 public class Consumption {
 
   Double minConsumption;

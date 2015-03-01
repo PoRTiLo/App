@@ -7,6 +7,11 @@ import android.text.TextUtils;
 import com.portilo.app.VehicleFragment;
 import com.portilo.app.model.Vehicle;
 
+/**
+ * Created by HC on 15.02.2015.
+ *
+ */
+
 public class UtilsImpl implements Utils {
 
   private static final String PREFS_NAME = "vehicle";

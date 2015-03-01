@@ -1,5 +1,10 @@
 package com.portilo.app;
 
+/**
+ * Created by HC on 15.02.2015.
+ *
+ */
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -7,9 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by HC portilo on 1/19/2015.
- */
 public class AboutAppFragment extends Fragment {
   /**
    * Returns a new instance of this fragment for the given section number.

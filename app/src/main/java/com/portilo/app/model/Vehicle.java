@@ -1,10 +1,12 @@
 package com.portilo.app.model;
 
+/**
+ * Created by HC on 15.02.2015.
+ *
+ */
+
 import android.widget.EditText;
 
-/**
- * Created by portilo on 2/26/2015.
- */
 public class Vehicle {
   private String vehicleName;
   private String registration;
