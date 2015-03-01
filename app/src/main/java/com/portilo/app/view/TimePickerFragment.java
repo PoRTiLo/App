@@ -1,5 +1,10 @@
 package com.portilo.app.view;
 
+/**
+ * Created by HC on 15.02.2015.
+ *
+ */
+
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;

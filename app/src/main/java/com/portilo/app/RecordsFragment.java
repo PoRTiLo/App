@@ -234,7 +234,7 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
 
   @Override
   public void onDialogNegativeClick() {
-    Log.i(LOGGER, "Canceled deleted record");
+    Log.i(LOGGER, "Deleting record canceled");
   }
 
   /**
