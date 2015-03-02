@@ -19,8 +19,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
-import com.portilo.app.common.Utils;
-import com.portilo.app.common.UtilsImpl;
 import com.portilo.app.model.Consumption;
 import com.portilo.app.model.Record;
 import com.portilo.app.model.Vehicle;
@@ -103,7 +101,7 @@ public class RecordsDataSource {
     return database.delete(MySQLiteHelper.TABLE_FUELING, MySQLiteHelper.COLUMN_NAME_ID + " = " + id, null);
   }
 
-  public List<Record> getAllRecords() {
+  public List<Record> getAllRecords(Activity activity) {
     List<Record> records = new ArrayList<>();
 
     Cursor cursor = database.query(MySQLiteHelper.TABLE_FUELING,
@@ -111,9 +109,17 @@ public class RecordsDataSource {
 
     cursor.moveToFirst();
     int numberRecords = 0;
+    Record previous = new Record();
+    Vehicle vehicle = Vehicle.getInstance(activity);
+    if (vehicle != null) {
+      previous.setOdometer(vehicle.getInitialOdometer() == null ? 0 : vehicle.getInitialOdometer());
+      previous.setVolume(vehicle.getInitialVolume() == null ? 0.0 : vehicle.getInitialVolume());
+    }
     while (!cursor.isAfterLast() && numberRecords < MAX_RECORDS) {
       Record record = cursorToRecord(cursor);
+      record.setPreviousRecord(previousRecord(previous));
       records.add(record);
+      previous = record;
       numberRecords++;
       cursor.moveToNext();
     }
@@ -121,6 +127,10 @@ public class RecordsDataSource {
     // Make sure to close the cursor
     cursor.close();
     return records;
+  }
+
+  private Record previousRecord(Record previous) {
+    return previous == null ? null : previous;
   }
 
   private Record cursorToRecord(Cursor cursor) {
@@ -136,7 +146,7 @@ public class RecordsDataSource {
     return record;
   }
 
-  public Double totalVolume() {
+  public Double totalVolume(Activity activity) {
     Cursor cursor = database.query(MySQLiteHelper.TABLE_FUELING, new String[]{MySQLiteHelper.COLUMN_NAME_VOLUME}, null, null, null, null, null);
 
     cursor.moveToFirst();
@@ -146,6 +156,7 @@ public class RecordsDataSource {
       totalVolume += volume;
       cursor.moveToNext();
     }
+    totalVolume += Vehicle.getInstance(activity).getInitialVolume();
     // Make sure to close the cursor
     cursor.close();
     return totalVolume;
@@ -186,10 +197,9 @@ public class RecordsDataSource {
   }
 
   public Double getMinimalConsumption(Activity activity) {
-    List<Record> records = getAllRecords();
+    List<Record> records = getAllRecords(activity);
     Double minimalConsumption = 0.0;
-    Utils utils = new UtilsImpl();
-    Vehicle vehicle = utils.loadVehicle(activity);
+    Vehicle vehicle = Vehicle.getInstance(activity);
     if (vehicle == null) {
       return minimalConsumption;
     }
@@ -206,10 +216,9 @@ public class RecordsDataSource {
   }
 
   public Double getMaximalConsumption(Activity activity) {
-    List<Record> records = getAllRecords();
+    List<Record> records = getAllRecords(activity);
     Double maximalConsumption = 0.0;
-    Utils utils = new UtilsImpl();
-    Vehicle vehicle = utils.loadVehicle(activity);
+    Vehicle vehicle = Vehicle.getInstance(activity);
     if (vehicle == null) {
       return maximalConsumption;
     }
@@ -226,18 +235,17 @@ public class RecordsDataSource {
   }
 
   public Consumption getConsumption(Activity activity) {
-    List<Record> records = getAllRecords();
+    List<Record> records = getAllRecords(activity);
     Double aveConsumption = 0.0;
     Record newestRecord = getNewestRecord();
     if (newestRecord != null) {
-      aveConsumption = (totalVolume() - newestRecord.getTank())/newestRecord.getDistance() * 100;
+      aveConsumption = (Math.abs(totalVolume(activity) - newestRecord.getTank()))/newestRecord.getOdometer() * 100;
       aveConsumption = Math.round(aveConsumption * 100.0) / 100.0;
     }
 
     Double minConsumption = 0.0;
     Double maxConsumption = 0.0;
-    Utils utils = new UtilsImpl();
-    Vehicle vehicle = utils.loadVehicle(activity);
+    Vehicle vehicle = Vehicle.getInstance(activity);
     if (vehicle == null) {
       return null;
     }
@@ -249,10 +257,12 @@ public class RecordsDataSource {
       Double consumption = Record.countConsumption(last, record);
       maxConsumption = consumption > maxConsumption ? consumption : maxConsumption;
       if (first) {
+        minConsumption = consumption;
         first = false;
       } else {
         minConsumption = consumption > minConsumption ? minConsumption : consumption;
       }
+
       last = record;
     }
 

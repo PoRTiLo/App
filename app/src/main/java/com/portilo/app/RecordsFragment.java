@@ -5,7 +5,6 @@ package com.portilo.app;
  *
  */
 
-
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -81,7 +80,7 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
 
     dataSource = new RecordsDataSource(getActivity());
     dataSource.open();
-    values = dataSource.getAllRecords();
+    values = dataSource.getAllRecords(getActivity());
     // Adapter to display your content
     mAdapter = new RecordAdapter(getActivity(), values);
     setHasOptionsMenu(true);
@@ -176,8 +175,9 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
 
   private void addNewRecord(Record mRecord) {
     Log.i(LOGGER, "New created record: " + mRecord.toString());
-    Record record = dataSource.createRecord(mRecord);
-    values.add(0, record);
+    dataSource.createRecord(mRecord);
+    values.clear();
+    values.addAll(dataSource.getAllRecords(getActivity()));
     mAdapter.notifyDataSetChanged();
     Log.i(LOGGER, "Update list");
   }
@@ -186,24 +186,12 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
     Log.i(LOGGER, "Updated record: " + mRecord.toString());
     int result = dataSource.updateRecord(mRecord);
     if (result > 0) {
-      values.remove(selectedRecordPosition);
-      values.add(selectedRecordPosition, mRecord);
+      values.clear();
+      values.addAll(dataSource.getAllRecords(getActivity()));
       mAdapter.notifyDataSetChanged();
       Log.i(LOGGER, "Update list");
     }
   }
-//  /**
-//   * The default content for this Fragment has a TextView that is shown when
-//   * the list is empty. If you would like to change the text, call this method
-//   * to supply the text it should use.
-//   */
-//  public void setEmptyText(CharSequence emptyText) {
-//    View emptyView = mListView.getEmptyView();
-//
-//    if (emptyView instanceof TextView) {
-//      ((TextView) emptyView).setText(emptyText);
-//    }
-//  }
 
   @Override
   public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -220,7 +208,9 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
       Record record = values.get(selectedRecordPosition);
       int result = dataSource.deleteRecord(record);
       if (result > 0) {
-        values.remove(selectedRecordPosition);
+        /*values.remove(selectedRecordPosition);*/
+        values.clear();
+        values.addAll(dataSource.getAllRecords(getActivity()));
         Log.i(LOGGER, "Deleted record: " + record);
         mAdapter.notifyDataSetChanged();
       }

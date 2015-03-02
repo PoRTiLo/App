@@ -26,6 +26,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.portilo.app.model.Record;
+import com.portilo.app.model.Vehicle;
 import com.portilo.app.view.DatePickerFragment;
 import com.portilo.app.view.TimePickerFragment;
 
@@ -135,7 +136,8 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
 
     });
 
-    tankEditText.setError(volumeEditText.getText().toString().length() <= 0 ? getString(R.string.required) : null);
+    tankEditText.setText(Vehicle.getInstance(getParent()).getTankVolume().toString());
+    tankEditText.setError(tankEditText.getText().toString().length() <= 0 ? getString(R.string.required) : null);
     tankEditText.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -151,7 +153,7 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
       public void afterTextChanged(Editable s) {}
     });
 
-    odometerEditText.setError(volumeEditText.getText().toString().length() <= 0 ? getString(R.string.required) : null);
+    odometerEditText.setError(odometerEditText.getText().toString().length() <= 0 ? getString(R.string.required) : null);
     odometerEditText.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) { }

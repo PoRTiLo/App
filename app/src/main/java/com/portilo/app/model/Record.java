@@ -19,9 +19,15 @@ public class Record implements Parcelable {
   private double volume;
   private double tank;
   private int odometer;
-  private int previousOdometer = 0;
-  private double previousTank = 70.0;
-  private long previousId;
+  private Record previousRecord;
+
+  public void setPreviousRecord(Record previousRecord) {
+    this.previousRecord = previousRecord;
+  }
+
+  public Record getPreviousRecord() {
+    return previousRecord;
+  }
 
   public long getId() {
     return id;
@@ -71,27 +77,6 @@ public class Record implements Parcelable {
     this.odometer = odometer;
   }
 
-  public int getDistance() {
-    int distance = odometer - previousOdometer;
-    return distance < 1 ? 0 : distance;
-  }
-
-  public double getConsumption() {
-    int distance = odometer - previousOdometer;
-
-    double consumption;
-
-    if (distance < 1) {
-      consumption = 0.0;
-    } else {
-      consumption = (volume + previousTank - tank) / distance * 100.0;
-
-      consumption = Math.round(consumption * 100.0) / 100.0;
-    }
-
-    return consumption;
-  }
-
   public static double countConsumption(Record last, Record actual) {
     // TODO: validate data?
     if (last.getOdometer() > actual.getOdometer()) {
@@ -103,7 +88,7 @@ public class Record implements Parcelable {
     if (distance < 1) {
       consumption = 0.0;
     } else {
-      consumption = (actual.getVolume() + last.getTank() - actual.getTank()) / distance * 100.0;
+      consumption = (Math.abs(actual.getVolume() + last.getTank() - actual.getTank())) / distance * 100.0;
       consumption = Math.round(consumption * 100.0) / 100.0;
     }
 
@@ -113,32 +98,17 @@ public class Record implements Parcelable {
   // Will be used by the ArrayAdapter in the ListView
   @Override
   public String toString() {
+    String returnString;
+    String stringFormat = "%td.%<tm.%<tY %<tR\t%s\n" +
+            "%,d km\n" +
+            "%.2f l (%.2f l)\n";
 
-//    int distance = odometer - previousOdometer;
-//
-//    double consumption;
-//
-//    if (distance < 1) {
-//      consumption = 0.0;
-//      distance = 0;
-//    } else {
-//      consumption = (volume + previousTank - tank) / distance * 100.0;
-//
-//      consumption = Math.round(consumption * 100.0) / 100.0;
-//    }
-//
-//    String returnString;
-//    String stringFormat = "%td.%<tm.%<tY %<tR\t%s\n" +
-//            "%,d km (+ %,d km)\n" +
-//            "%.2f l (%.2f l)\n" +
-//            "l/100km: %.2f";
-//
-//    returnString = String.format(stringFormat,
-//            new Date(), location, odometer, distance, volume, tank, consumption);
+    returnString = String.format(stringFormat,
+        new Date(date), location, odometer, volume, tank);
 //
 //    previousOdometer = odometer;
-    String returnString = ", location:" + location + ", volume:" + volume + ", odometer:" + odometer + ", tank:" + tank + ", date:" + new Date(date).toString();
-    return returnString;
+   /* String returnString = ", location:" + location + ", volume:" + volume + ", odometer:" + odometer + ", tank:" + tank + ", date:" + new Date(date).toString();
+   */ return returnString;
   }
 
 

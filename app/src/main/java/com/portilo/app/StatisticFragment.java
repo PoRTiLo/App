@@ -30,7 +30,6 @@ public class StatisticFragment extends Fragment {
   }
 
   private RecordsDataSource dataSource;
-  private Utils utils = new UtilsImpl();
   public StatisticFragment() {}
 
   @Override
@@ -65,7 +64,7 @@ public class StatisticFragment extends Fragment {
     TextView lowestFuelEconomyTextView = (TextView) view.findViewById(R.id.lowestFuelEconomyTextView);
     TextView highestFuelEconomyTextView = (TextView) view.findViewById(R.id.highestFuelEconomyTextView);
 
-    Double totalVolume = dataSource.totalVolume();
+    Double totalVolume = dataSource.totalVolume(getActivity());
     totalVolumeTextView.setText(totalVolume == null ? null : totalVolume.toString());
 
     Double minimalVolume = dataSource.minimalVolume();
@@ -79,10 +78,10 @@ public class StatisticFragment extends Fragment {
 
     Record record = dataSource.getNewestRecord();
     if (record != null) {
-      totalTachometerTextView.setText(record.getDistance() + "");
-      Vehicle vehicle = utils.loadVehicle(getActivity());
+      totalTachometerTextView.setText(record.getOdometer() + "");
+      Vehicle vehicle = Vehicle.getInstance(getActivity());
       if (vehicle != null) {
-        Integer totalDistance = record.getDistance() - vehicle.getInitialOdometer();
+        Integer totalDistance = record.getOdometer() - vehicle.getInitialOdometer();
         totalDistanceTextView.setText(totalDistance.toString());
       } else {
         totalDistanceTextView.setText("");

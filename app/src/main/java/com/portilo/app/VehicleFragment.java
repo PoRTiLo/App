@@ -7,7 +7,6 @@ package com.portilo.app;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -21,8 +20,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.portilo.app.common.Utils;
-import com.portilo.app.common.UtilsImpl;
 import com.portilo.app.model.Vehicle;
 
 
@@ -41,13 +38,9 @@ public class VehicleFragment extends Fragment {
   private EditText initialVolumeEditText;
   private EditText tankVolumeEditText;
 
-
-
   private boolean enableEdit = false;
 
   private Vehicle vehicle;
-
-  private Utils utils = new UtilsImpl();
 
   public VehicleFragment() {}
 
@@ -56,8 +49,7 @@ public class VehicleFragment extends Fragment {
     super.onCreate(savedInstanceState);
 
     setHasOptionsMenu(true);
-    vehicle = vehicle == null ? new Vehicle() : vehicle;
-    vehicle = utils.loadVehicle(getActivity());
+    vehicle = Vehicle.getInstance(getActivity());
   }
 
   @Override
@@ -92,7 +84,7 @@ public class VehicleFragment extends Fragment {
       if (enableEdit) {
         if (validateAndFill()) {
           enableEdit = false;
-          utils.saveVehicle(getActivity(), vehicle);
+          vehicle.saveVehicle(getActivity());
           disableEditTexts();
           item.setIcon(R.drawable.ic_action_edit);
           Toast toast = Toast.makeText(getActivity(), getString(R.string.vehicle_added), Toast.LENGTH_SHORT);
