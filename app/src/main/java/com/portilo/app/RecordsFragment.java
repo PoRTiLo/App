@@ -45,8 +45,7 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
 
   private OnFragmentInteractionListener mListener;
 
-  // The fragment's ListView/GridView.
-  private AbsListView mListView;
+
 
   // The Adapter which will be used to populate the ListView/GridView with Views.
   private ArrayAdapter<Record> mAdapter;
@@ -90,8 +89,8 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_records, container, false);
 
-    // Set the adapter
-    mListView = (AbsListView) view.findViewById(android.R.id.list);
+    // Set the adapter, The fragment's ListView/GridView.
+    AbsListView mListView = (AbsListView) view.findViewById(android.R.id.list);
     mListView.setAdapter(mAdapter);
 
     // Set OnItemClickListener so we can be notified on item clicks
@@ -238,7 +237,6 @@ public class RecordsFragment extends Fragment implements AbsListView.OnItemClick
    * >Communicating with Other Fragments</a> for more information.
    */
   public interface OnFragmentInteractionListener {
-    // TODO: Update argument type and name
     public void onFragmentInteraction(String id);
   }
 

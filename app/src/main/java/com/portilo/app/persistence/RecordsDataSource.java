@@ -113,7 +113,7 @@ public class RecordsDataSource {
     Vehicle vehicle = Vehicle.getInstance(activity);
     if (vehicle != null) {
       previous.setOdometer(vehicle.getInitialOdometer() == null ? 0 : vehicle.getInitialOdometer());
-      previous.setVolume(vehicle.getInitialVolume() == null ? 0.0 : vehicle.getInitialVolume());
+      previous.setTank(vehicle.getInitialVolume() == null ? 0.0 : vehicle.getInitialVolume());
     }
     while (!cursor.isAfterLast() && numberRecords < MAX_RECORDS) {
       Record record = cursorToRecord(cursor);
@@ -159,14 +159,14 @@ public class RecordsDataSource {
     totalVolume += Vehicle.getInstance(activity).getInitialVolume();
     // Make sure to close the cursor
     cursor.close();
-    return totalVolume;
+    return Math.round(totalVolume * 100.0) / 100.0;
   }
 
   public Double minimalVolume() {
     Cursor cursor = database.query(MySQLiteHelper.TABLE_FUELING,
             new String[]{ "min(" + MySQLiteHelper.COLUMN_NAME_VOLUME + ")" }, null, null, null, null, null);
     cursor.moveToFirst();
-    Double minVolume = !cursor.isAfterLast() ? cursor.getDouble(0) : null;
+    Double minVolume = !cursor.isAfterLast() ? Math.round(cursor.getDouble(0) * 100.0) / 100.0 : null;
     cursor.close();
     return minVolume;
   }
@@ -175,7 +175,7 @@ public class RecordsDataSource {
     Cursor cursor = database.query(MySQLiteHelper.TABLE_FUELING,
             new String[]{ "max(" + MySQLiteHelper.COLUMN_NAME_VOLUME + ")" }, null, null, null, null, null);
     cursor.moveToFirst();
-    Double maxVolume = !cursor.isAfterLast() ? cursor.getDouble(0) : null;
+    Double maxVolume = !cursor.isAfterLast() ? Math.round(cursor.getDouble(0) * 100.0) / 100.0 : null;
     // Make sure to close the cursor
     cursor.close();
     return maxVolume;
@@ -239,7 +239,8 @@ public class RecordsDataSource {
     Double aveConsumption = 0.0;
     Record newestRecord = getNewestRecord();
     if (newestRecord != null) {
-      aveConsumption = (Math.abs(totalVolume(activity) - newestRecord.getTank()))/newestRecord.getOdometer() * 100;
+      int distance = newestRecord.getOdometer()- Vehicle.getInstance(activity).getInitialOdometer();
+      aveConsumption = (Math.abs(totalVolume(activity) - newestRecord.getTank()))/distance * 100;
       aveConsumption = Math.round(aveConsumption * 100.0) / 100.0;
     }
 

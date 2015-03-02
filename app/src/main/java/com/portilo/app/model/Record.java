@@ -103,12 +103,9 @@ public class Record implements Parcelable {
             "%,d km\n" +
             "%.2f l (%.2f l)\n";
 
-    returnString = String.format(stringFormat,
-        new Date(date), location, odometer, volume, tank);
-//
-//    previousOdometer = odometer;
-   /* String returnString = ", location:" + location + ", volume:" + volume + ", odometer:" + odometer + ", tank:" + tank + ", date:" + new Date(date).toString();
-   */ return returnString;
+    returnString = String.format(stringFormat, new Date(date), location, odometer, volume, tank);
+
+    return returnString;
   }
 
 

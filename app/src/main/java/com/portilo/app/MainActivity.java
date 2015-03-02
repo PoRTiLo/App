@@ -51,7 +51,6 @@ public class MainActivity extends ActionBarActivity
   public void onNavigationDrawerItemSelected(int position) {
 
     onSectionAttached(position);
-    // TODO not work goods
     restoreActionBar();
     // update the menu content by replacing fragments
     FragmentManager fragmentManager = getFragmentManager();
@@ -123,8 +122,7 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-      View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-      return rootView;
+      return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
     @Override

@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.portilo.app.common.Utils;
-import com.portilo.app.common.UtilsImpl;
 import com.portilo.app.model.Consumption;
 import com.portilo.app.model.Vehicle;
 import com.portilo.app.persistence.RecordsDataSource;
