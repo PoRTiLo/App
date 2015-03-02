@@ -19,4 +19,7 @@ public class UtilsImpl implements Utils {
     return !TextUtils.isEmpty(vehicleName);
   }
 
+  public static String round(Double number) {
+    return String.format("%.2f", number);
+  }
 }

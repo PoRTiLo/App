@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.portilo.app.common.UtilsImpl;
 import com.portilo.app.model.Record;
 
 import java.util.Date;
@@ -55,8 +56,8 @@ public class RecordAdapter extends ArrayAdapter<Record> {
     String formatDate = String.format("%td.%<tm.%<tY %<tR", new Date(mRecord.getDate()));
     dateLocation.setText(formatDate + " - " + mRecord.getLocation());
     odometerDistance.setText(mRecord.getOdometer() + " km (+ " + (mRecord.getOdometer() - mRecord.getPreviousRecord().getOdometer()) + " km)");
-    volumeTank.setText(mRecord.getVolume() + " l (" + mRecord.getTank() + " l)");
-    consumption.setText("Průměrná spotřeba: " + Record.countConsumption(mRecord.getPreviousRecord(), mRecord) + " l/100 km");
+    volumeTank.setText(UtilsImpl.round(mRecord.getVolume()) + " l (" + UtilsImpl.round(mRecord.getTank()) + " l)");
+    consumption.setText("Průměrná spotřeba: " + UtilsImpl.round(Record.countConsumption(mRecord.getPreviousRecord(), mRecord)) + " l/100 km");
 
     // 5. return rowView
     return rowView;

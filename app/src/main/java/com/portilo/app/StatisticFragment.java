@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.portilo.app.common.UtilsImpl;
 import com.portilo.app.model.Consumption;
 import com.portilo.app.model.Vehicle;
 import com.portilo.app.persistence.RecordsDataSource;
@@ -63,13 +64,13 @@ public class StatisticFragment extends Fragment {
     TextView highestFuelEconomyTextView = (TextView) view.findViewById(R.id.highestFuelEconomyTextView);
 
     Double totalVolume = dataSource.totalVolume(getActivity());
-    totalVolumeTextView.setText(totalVolume == null ? null : totalVolume.toString());
+    totalVolumeTextView.setText(totalVolume == null ? null : UtilsImpl.round(totalVolume));
 
     Double minimalVolume = dataSource.minimalVolume();
-    minimalVolumeTextView.setText(minimalVolume == null ? null : minimalVolume.toString());
+    minimalVolumeTextView.setText(minimalVolume == null ? null : UtilsImpl.round(minimalVolume));
 
     Double maximalVolume = dataSource.maximalVolume();
-    maximalVolumeTextView.setText(maximalVolume == null ? null : maximalVolume.toString());
+    maximalVolumeTextView.setText(maximalVolume == null ? null : UtilsImpl.round(maximalVolume));
 
     Long totalRefueling = dataSource.totalVolumes();
     totalRefuelingTextView.setText(totalRefueling == null ? null : totalRefueling.toString());
@@ -91,9 +92,9 @@ public class StatisticFragment extends Fragment {
 
     Consumption consumption = dataSource.getConsumption(getActivity());
     if (consumption != null) {
-      lowestFuelEconomyTextView.setText(consumption.getMinConsumption().toString());
-      highestFuelEconomyTextView.setText(consumption.getMaxConsumption().toString());
-      averageFuelEconomyTextView.setText(consumption.getAveConsumption().toString());
+      lowestFuelEconomyTextView.setText(UtilsImpl.round(consumption.getMinConsumption()));
+      highestFuelEconomyTextView.setText(UtilsImpl.round(consumption.getMaxConsumption()));
+      averageFuelEconomyTextView.setText(UtilsImpl.round(consumption.getAveConsumption()));
     } else {
       lowestFuelEconomyTextView.setText("");
       highestFuelEconomyTextView.setText("");

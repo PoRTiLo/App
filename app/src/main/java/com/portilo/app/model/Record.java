@@ -89,7 +89,7 @@ public class Record implements Parcelable {
       consumption = 0.0;
     } else {
       consumption = (Math.abs(actual.getVolume() + last.getTank() - actual.getTank())) / distance * 100.0;
-      consumption = Math.round(consumption * 100.0) / 100.0;
+      /*consumption = Math.round(consumption * 100.0) / 100.0;*/
     }
 
     return consumption;
