@@ -20,6 +20,9 @@ import android.support.v4.widget.DrawerLayout;
 
 import com.portilo.app.view.NavigationDrawerFragment;
 
+import org.androidannotations.annotations.EActivity;
+
+@EActivity(R.layout.activity_main)
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, RecordsFragment.OnFragmentInteractionListener {
 
@@ -38,7 +41,6 @@ public class MainActivity extends ActionBarActivity
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
 
     mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
     mTitle = getTitle();
