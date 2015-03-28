@@ -12,6 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.androidannotations.annotations.EFragment;
+
+@EFragment
 public class AboutAppFragment extends Fragment {
   /**
    * Returns a new instance of this fragment for the given section number.

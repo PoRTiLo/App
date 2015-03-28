@@ -30,17 +30,32 @@ import com.portilo.app.model.Vehicle;
 import com.portilo.app.view.DatePickerFragment;
 import com.portilo.app.view.TimePickerFragment;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.Calendar;
 
-
+@EActivity(R.layout.activity_add_new_item)
 public class AddNewRecordActivity extends ActionBarActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-  private Button dateButton;
-  private Button timeButton;
-  private EditText odometerEditText;
-  private EditText tankEditText;
-  private EditText volumeEditText;
-  private EditText locationEditText;
+  @ViewById(R.id.timeButton)
+  Button dateButton;
+
+  @ViewById(R.id.dateButton)
+  Button timeButton;
+
+  @ViewById(R.id.odometerEditText)
+  EditText odometerEditText;
+
+  @ViewById(R.id.tankEditText)
+  EditText tankEditText;
+
+  @ViewById(R.id.volumeEditText)
+  EditText volumeEditText;
+
+  @ViewById(R.id.locationEditText)
+  EditText locationEditText;
 
   private Record mRecord;
   private Calendar calendar;
@@ -49,7 +64,6 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_add_new_item);
     Intent intent = getIntent();
     mRecord = intent.getParcelableExtra(RecordsFragment.UPDATE_RECORD.toString());
     init();
@@ -110,14 +124,8 @@ public class AddNewRecordActivity extends ActionBarActivity implements DatePicke
     }
   }
 
-  private void init() {
-    timeButton = (Button) findViewById(R.id.timeButton);
-    dateButton = (Button) findViewById(R.id.dateButton);
-    locationEditText = (EditText) findViewById(R.id.locationEditText);
-    odometerEditText = (EditText) findViewById(R.id.odometerEditText);
-    volumeEditText = (EditText) findViewById(R.id.volumeEditText);
-    tankEditText = (EditText) findViewById(R.id.tankEditText);
-
+  @AfterViews
+  protected void init() {
     volumeEditText.setError(volumeEditText.getText().toString().length() <= 0 ? getString(R.string.required) : null);
     volumeEditText.addTextChangedListener(new TextWatcher() {
       @Override

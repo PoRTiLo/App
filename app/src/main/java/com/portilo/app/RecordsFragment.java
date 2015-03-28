@@ -29,6 +29,8 @@ import com.portilo.app.persistence.RecordsDataSource;
 import com.portilo.app.model.Record;
 import com.portilo.app.view.DeleteDialog;
 
+import org.androidannotations.annotations.EFragment;
+
 import java.util.List;
 
 /**
@@ -40,12 +42,11 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
+@EFragment
 public class RecordsFragment extends Fragment implements AbsListView.OnItemClickListener,
         AbsListView.OnItemLongClickListener, DeleteDialog.NoticeDialogListener {
 
   private OnFragmentInteractionListener mListener;
-
-
 
   // The Adapter which will be used to populate the ListView/GridView with Views.
   private ArrayAdapter<Record> mAdapter;

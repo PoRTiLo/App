@@ -19,6 +19,9 @@ import com.portilo.app.model.Vehicle;
 import com.portilo.app.persistence.RecordsDataSource;
 import com.portilo.app.model.Record;
 
+import org.androidannotations.annotations.EFragment;
+
+@EFragment
 public class StatisticFragment extends Fragment {
 
   /**

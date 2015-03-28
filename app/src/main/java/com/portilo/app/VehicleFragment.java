@@ -22,7 +22,11 @@ import android.widget.Toast;
 
 import com.portilo.app.model.Vehicle;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
 
+@EFragment
 public class VehicleFragment extends Fragment {
 
   /**
@@ -32,11 +36,20 @@ public class VehicleFragment extends Fragment {
     return new VehicleFragment();
   }
 
-  private EditText vehicleNameEditText;
-  private EditText registrationEditText;
-  private EditText initialOdometerEditText;
-  private EditText initialVolumeEditText;
-  private EditText tankVolumeEditText;
+  @ViewById(R.id.vehicleNameEditText)
+  EditText vehicleNameEditText;
+
+  @ViewById(R.id.registrationEditText)
+  EditText registrationEditText;
+
+  @ViewById(R.id.initialOdometerEditText)
+  EditText initialOdometerEditText;
+
+  @ViewById(R.id.initialVolumeEditText)
+  EditText initialVolumeEditText;
+
+  @ViewById(R.id.tankVolumeEditText)
+  EditText tankVolumeEditText;
 
   private boolean enableEdit = false;
 
@@ -55,7 +68,7 @@ public class VehicleFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_vehicle, container, false);
-    init(view);
+    init();
     return view;
   }
 
@@ -163,12 +176,8 @@ public class VehicleFragment extends Fragment {
     return true;
   }
 
-  private void init(View view) {
-    vehicleNameEditText = (EditText) view.findViewById(R.id.vehicleNameEditText);
-    registrationEditText = (EditText) view.findViewById(R.id.registrationEditText);
-    initialOdometerEditText = (EditText) view.findViewById(R.id.initialOdometerEditText);
-    initialVolumeEditText = (EditText) view.findViewById(R.id.initialVolumeEditText);
-    tankVolumeEditText = (EditText) view.findViewById(R.id.tankVolumeEditText);
+  @AfterViews
+  protected void init() {
 
     disableEditTexts();
 
