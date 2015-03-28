@@ -26,6 +26,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
   public static final String COLUMN_NAME_VOLUME   = "volume";   // natankováno l
   public static final String COLUMN_NAME_TANK     = "tank";     // stav l
   public static final String COLUMN_NAME_ODOMETER = "odometer"; // stav km
+  public static final String VEHICLE_ID           = "vehicle";  // vozidlo
+
+  public static final String TABLE_VEHICLE = "vehicle";
+
+  public static final String VEHICLE_NAME                 = "name";
+  public static final String VEHICLE_CREATE_DATE          = "createDate";
+  public static final String VEHICLE_UPDATE_DATE          = "updateDate";
+  public static final String VEHICLE_REGISTRATION         = "registration";
+  public static final String VEHICLE_INITIAL_ODOMETER     = "initialOdometer";
+  public static final String VEHICLE_INITIAL_VOLUME       = "initialVolume";
+  public static final String VEHICLE_TANK_VOLUME          = "tankVolume";
 
   // Database creation sql statement
   private static final String DATABASE_CREATE = "create table "
@@ -35,7 +46,19 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
           + COLUMN_NAME_LOCATION + " text, "
           + COLUMN_NAME_VOLUME   + " real, "
           + COLUMN_NAME_TANK     + " real, "
-          + COLUMN_NAME_ODOMETER + " integer);";
+          + COLUMN_NAME_ODOMETER + " integer, "
+          + VEHICLE_ID + " integer);";
+
+  private static final String CREATE_TABLE_VEHICLE = "create table "
+          + TABLE_VEHICLE             + "("
+          + COLUMN_NAME_ID            + " integer primary key autoincrement, "
+          + VEHICLE_NAME              + " text, "
+          + VEHICLE_REGISTRATION      + " text, "
+          + VEHICLE_CREATE_DATE       + " integer, "
+          + VEHICLE_UPDATE_DATE       + " integer, "
+          + VEHICLE_INITIAL_ODOMETER  + " real, "
+          + VEHICLE_TANK_VOLUME       + " real, "
+          + VEHICLE_INITIAL_VOLUME    + " integer);";
 
   public MySQLiteHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -43,7 +66,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
   @Override
   public void onCreate(SQLiteDatabase database) {
-    database.execSQL(DATABASE_CREATE);
+    database.execSQL(DATABASE_CREATE + " " + CREATE_TABLE_VEHICLE);
   }
 
   @Override
@@ -51,7 +74,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     Log.w(MySQLiteHelper.class.getName(),
             "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
-    db.execSQL("DROP TABLE IF EXISTS " + TABLE_FUELING);
+    db.execSQL("DROP TABLE IF EXISTS " + TABLE_FUELING + " " + TABLE_VEHICLE);
     onCreate(db);
   }
 }
